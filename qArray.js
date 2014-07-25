@@ -1,8 +1,6 @@
 ﻿/*
  Array query object for JavaScript
  Copyright (c) 2014 Walter M. Soto Reyes
- https://qArray.codeplex.com
- License: https://qArray.codeplex.com/license
 */
 
 (function () {
