@@ -1,6 +1,8 @@
 ﻿/*
  Array query object for JavaScript
- Copyright (c) 2014 Walter M. Soto Reyes 
+ Copyright (c) 2014 Walter M. Soto Reyes
+ https://qArray.codeplex.com
+ License: https://qArray.codeplex.com/license
 */
 
 (function () {
@@ -405,17 +407,28 @@
 
     };
 
-    if (!window.qA) {
-        window.qA = function (arr) {
-            ///	<summary>
-            ///	Query array object
-            ///	</summary>
-            ///	<param name="arr" type="array">
-            ///	Array
-            ///	</param>
-            return new _qArray(arr);
+    var qA = function (arr) {
+        ///	<summary>
+        ///	Query array object
+        ///	</summary>
+        ///	<param name="arr" type="array">
+        ///	Array
+        ///	</param>
+        return new _qArray(arr);
+
+    };
+
+    if (typeof window !== 'undefined') {
+        if (!window.qA) {
+            window.qA = qA;
+        }
+    } else {
+        // Node.js export
+        if (typeof module !== 'undefined' && module.exports) {
+            module.exports = qA;
         }
     }
+     
     
 
 })();
