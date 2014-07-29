@@ -1,8 +1,6 @@
 ﻿/*
  Array query object for JavaScript
- Copyright (c) 2014 Walter M. Soto Reyes
- https://qArray.codeplex.com
- License: https://qArray.codeplex.com/license
+ Copyright (c) 2014 Walter M. Soto Reyes 
 */
 
 (function () {
@@ -323,9 +321,9 @@
             return this;
         };
 
-        var contains = function (arr, o) {
-            for (var s = 0, sm = arr.length; s < sm; s++) {
-                if (JSON.stringify(arr[s]) === JSON.stringify(o)) {
+        var contains = function (array, o) {
+            for (var s = 0, sm = array.length; s < sm; s++) {
+                if (JSON.stringify(array[s]) === JSON.stringify(o)) {
 
                     return true;
                 }
@@ -345,6 +343,16 @@
             return contains(arr, item);
         };
 
+        var _any = function (array, fn) {
+            for (var i = 0, m = array.length; i < m; i++) {
+                if (fn(array[i])) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+
         this.any = function (fn) {
             ///	<summary>
             ///	Check if any item in the array matches the condition
@@ -352,15 +360,11 @@
             ///	<param name="fn" type="function">
             ///	Condition to match
             ///	</param>
-            ///	<returns type="true/false" />
-            for (var i = 0, m = arr.length; i < m; i++) {
-                if (fn(arr[i])) {
-                    return true;
-                }
-            }
-            return false;
+            ///	<returns type="true/false" /> 
+            return _any(arr, fn);
         }
 
+        
         this.distinct = function () {
             ///	<summary>
             ///	Returns only distinct items in the array
@@ -368,8 +372,7 @@
             ///	<returns type="this" />
             var uni = [];
             if (arr.length > 0) {
-                for (var i = 0, m = arr.length; i < m; i++) {
-                    
+                for (var i = 0, m = arr.length; i < m; i++) { 
                     if (!contains(uni, arr[i])) {
                         uni.push(arr[i]);
                     } 
@@ -396,6 +399,71 @@
             }
             return this;
             
+        };
+
+        var _index = function (fn,last) {
+            var index = -1;
+            for (var i = 0, max = arr.length; i < max; i++) {
+                if (fn(arr[i])) {
+                    index = i;
+                    if (!last) {
+                      break;
+                    }  
+                }
+            }
+            return index;
+        };
+
+        this.lastIndexOf = function (fn) {
+            ///	<summary>
+            ///	Find last index of a element based on a condition
+            ///	</summary> 
+            ///	<returns type="int" />
+            return _index(fn, true);
+        };
+
+        this.indexOf = function (fn) {
+            ///	<summary>
+            ///	Find first index of a element based on a condition
+            ///	</summary> 
+            ///	<returns type="int" />
+            return _index(fn, false);
+        };
+
+        this.groupBy = function (fn) { 
+            ///	<summary>
+            ///	Retrieve a groups the elements from an array.
+            ///	</summary> 
+            ///	<returns type="array" />
+          
+            var uni = [];
+            if (arr.length > 0) {
+                for (var i = 0, m = arr.length; i < m; i++) {
+                    if (!contains(uni, fn(arr[i]))) {
+                        uni.push({key:fn(arr[i]),obj:arr[i]});
+                    }
+                }
+                  
+                var g = [];
+                for (var k = 0, mk = uni.length;k < mk;k++){
+
+                    if (!_any(g, function (n) {
+                        return n.key == uni[k].key;
+                    })) {
+                        g.push({ key: uni[k].key, item: [] }); 
+                    }
+                    
+                    var index = qA(g).indexOf(function (n) {  return n.key === uni[k].key; })
+                  
+                    if (index !== -1 && index < uni.length) {
+                        g[index].item.push(qA(uni).elementAt(k).obj);
+                    }  
+                }
+
+                arr = g.slice(0);
+            }
+            
+            return this;
         };
 
         this.toArray = function () {
