@@ -1,6 +1,10 @@
 ﻿/*
  Array query object for JavaScript
+<<<<<<< HEAD
  Copyright (c) 2014 Walter M. Soto Reyes 
+=======
+ Copyright (c) 2014 Walter M. Soto Reyes
+>>>>>>> origin/master
 */
 
 (function () {
