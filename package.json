@@ -1,15 +1,19 @@
 {
     "name": "qarr",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Array query library.",
-    "preferGlobal": true,
-    "bin": { "qarr": "qArr.js" },
+    "preferGlobal": true, 
+	"main":"qArr.js",
     "author": "Walter M. Soto Reyes",
     "repository":{"type": "git", "url": "https://github.com/waltersoto/qArr.git"},
     "homepage":"http://soto.co/project/qarr",
     "contributors":[],
     "keywords":["Linq","array"],
-     "license":"MIT",
+    "license":"MIT",
+	"files": [
+		"qArr.js",
+		"LICENSE"
+	 ],
     "bugs":"https://github.com/waltersoto/qArr",
     "dependencies": {
      },
