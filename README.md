@@ -1,4 +1,4 @@
-qArray
+qArr
 ======
 
-qArray.js
+qArr.js
