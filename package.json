@@ -1,10 +1,10 @@
 {
-    "name": "qArray",
+    "name": "qarr",
     "version": "0.0.1",
     "description": "Array query library.",
     "preferGlobal": true,
-    "bin": { "qArray": "qArray.js" },
-    "author": "Walter M. Soto Reyes",
+    "bin": { "qarr": "qArr.js" },
+    "author": "waltersoto",
      "repository":{"type": "git", "url": "https://github.com/waltersoto/qArray.git"},
      "homepage":"https://github.com/waltersoto/qArray",
     "contributors":[],

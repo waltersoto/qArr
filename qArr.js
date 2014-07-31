@@ -1,11 +1,12 @@
 ﻿/*
+ qArr.js
  Array query object for JavaScript
  (c) 2014 Walter M. Soto Reyes
 */
 
 (function () {
 
-    var _qArray = function (_array) {
+    var _qArr = function (_array) {
         var arr = [];
 
         if (_array.constructor !== Array) {
@@ -482,7 +483,7 @@
         ///	<param name="arr" type="array">
         ///	Array
         ///	</param>
-        return new _qArray(arr);
+        return new _qArr(arr);
 
     };
 
