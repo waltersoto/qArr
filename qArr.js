@@ -153,23 +153,12 @@
             ///   <param name="fn" type="function">Condition</param> 
             /// </signature>
             ///	<returns type="item or null" />
-            if (typeof fn !== 'function') {
-                if (arr.length > 0) {
-                    return arr[0];
-                }
-            } else {
-                var sub = [];
-                (function (a) {
-                    for (var i = 0, max = a.length; i < max; i++) {
-                        if (fn(a[i])) {
-                            sub.push(a[i]);
-                        }
-                        
-                    }
-                })(arr);
-                if (sub.length > 0) {
-                    return sub[0];
-                }
+            if (typeof fn === 'function') {
+                this.where(fn);
+            }
+
+            if (arr.length > 0) {
+                return arr[0];
             }
             return null;
         }
@@ -183,23 +172,15 @@
             ///   <param name="fn" type="function">Condition</param> 
             /// </signature>
             ///	<returns type="item or null" />
-            if (typeof fn !== 'function') {
-                if (arr.length > 0) {
-                    return arr[arr.length - 1];
-                }
-            } else {
-                var sub = [];
-                (function (a) {
-                    for (var i = 0, max = a.length; i < max; i++) {
-                        if (fn(a[i])) {
-                            sub.push(a[i]);
-                        } 
-                    }
-                })(arr);
-                if (sub.length > 0) {
-                    return sub[sub.length - 1];
-                }
+
+            if (typeof fn === 'function') {
+                this.where(fn);
             }
+
+            if (arr.length > 0) {
+                return arr[arr.length - 1];
+            }
+             
             return null;
         }
 
@@ -207,16 +188,9 @@
             ///   <summary>Returns single item that meets the condition (null if no item or more than one item meet the condition)</summary>
             ///   <param name="fn" type="function">Condition</param> 
             ///	  <returns type="item or null" />
-            var sub = [];
-            (function (a) {
-                for (var i = 0, max = a.length; i < max; i++) {
-                    if (fn(a[i])) {
-                        sub.push(a[i]);
-                    }
-                }
-            })(arr);
-            if (sub.length == 1) {
-                return sub[0];
+            this.where(fn); 
+            if (arr.length == 1) {
+                return arr[0];
             }
 
             return null;
@@ -244,16 +218,7 @@
             if (typeof fn !== 'function') {
                 return arr.length;
             }  
-            var sub = [];
-            (function (a) {
-                for (var i = 0, max = a.length; i < max; i++) {
-                    if (fn(a[i])) {
-                        sub.push(a[i]);
-                    }
-                }
-            })(arr);
-
-            return sub.length;
+            return this.where(fn).toArray().length;
         }
 
         this.skip = function (num) {
