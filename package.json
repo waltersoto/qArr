@@ -1,6 +1,6 @@
 {
     "name": "qarr",
-    "version": "0.0.3",
+    "version": "0.0.4b",
     "description": "Array query library.",
     "preferGlobal": true,
     "bin": { "qarr": "qArr.js" },

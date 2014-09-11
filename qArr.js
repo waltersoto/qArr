@@ -396,11 +396,28 @@
             return _index(fn, false);
         };
 
+        this.sum = function () {
+            ///	<summary>
+            ///	Returns the sum all numeric values in the array
+            ///	</summary> 
+            ///	<returns type="int" />
+            var count = 0;
+            if (arr.length > 0) {
+                for (var i = 0, m = arr.length; i < m; i++) {
+                    if (!isNaN(arr[i])) {
+                        count += parseInt(arr[i]);
+                    }
+                }
+            }
+
+            return count;
+        };
+
         this.groupBy = function (fn) { 
             ///	<summary>
             ///	Retrieve a groups the elements from an array.
             ///	</summary> 
-            ///	<returns type="array" />
+            ///	<returns type="array of {key:'',item[]}" />
           
             var uni = [];
             if (arr.length > 0) {
