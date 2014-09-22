@@ -412,6 +412,7 @@
 
             return count;
         };
+ 
 
         this.groupBy = function (fn) { 
             ///	<summary>
@@ -446,6 +447,29 @@
                 arr = g.slice(0);
             }
             
+            return this;
+        };
+
+        this.except = function (excludeArr) {
+            ///	<summary>
+            ///	Produce an array of the differences between main array and the parameter array.
+            ///	</summary>
+            ///	<param name="arr" type="excludeArr">
+            ///	Array to exclude from main array
+            ///	</param>
+            if (excludeArr.constructor === Array) {
+                //Paramter must be an array
+                var uni = [];
+                if (arr.length > 0) {
+                    for (var i = 0, m = arr.length; i < m; i++) {
+                        if (!contains(excludeArr, arr[i])) {
+                            uni.push(arr[i]);
+                        }
+                    }
+                    arr = uni.slice(0);
+                }
+
+            }
             return this;
         };
 
