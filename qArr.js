@@ -18,13 +18,14 @@
             ///	Returns subset where items meet criteria.
             ///	</summary>
             ///	<param name="fn" type="function">
-            ///	Condition ex. function(n){ return n > 0; }
+            ///	Condition ex. function(item){ return item > 0; }
+            /// or function(item,index){ return index % 2 == 0; }
             ///	</param>
             ///	<returns type="this" />
             var sub = [];
             (function (a) {
                 for (var i = 0, max = a.length; i < max; i++) {
-                    if (fn(arr[i])) {
+                    if (fn(arr[i],i)) {
                         sub.push(arr[i]);
                     }
                 }
@@ -54,13 +55,14 @@
             ///	Transform selected items to a new form
             ///	</summary>
             ///	<param name="fn" type="function">
-            ///	Format condition ex. function(n){ return 'item '+n+' as string'; }
+            ///	Format condition ex. function(item){ return 'item: '+item+' as string'; } 
+            ///        or function(item,index){ return 'item '+item+' as string'; }
             ///	</param>
             ///	<returns type="this" />
             var sub = [];
             (function (a) {
                 for (var i = 0, max = a.length; i < max; i++) {
-                    sub.push(fn(a[i]));
+                    sub.push(fn(a[i],i));
                 }
             })(arr);
             arr = sub;
