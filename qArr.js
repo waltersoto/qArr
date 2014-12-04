@@ -6,6 +6,8 @@
 
 (function () {
 
+    var FUNCTION = 'function', UNDEFINED = 'undefined', STRING = 'string';
+   
     var _qArr = function (_array) {
         var arr = [];
 
@@ -42,7 +44,7 @@
             /// Ex. fn(val,index);
             ///	</param>
             ///	<returns type="this" />
-            if (arr.length > 0 && typeof fn === 'function') {
+            if (arr.length > 0 && typeof fn === FUNCTION) {
                 for (var fi = 0, fm = arr.length; fi < fm; fi++) {
                     fn(arr[fi],fi);
                 }
@@ -81,12 +83,12 @@
             var sub = [];
 
             if (arr.length > 0) {
-                if (typeof arr[0] === 'string') {
+                if (typeof arr[0] === STRING) {
                     sub = arr.sort().reverse();
                 } else {
                     sub = arr.sort(function (a, b) {
 
-                        if (typeof fn !== 'function') {
+                        if (typeof fn !== FUNCTION) {
                             if (!isNaN(parseFloat(a))) {
                                 return -(parseFloat(a) - parseFloat(b));
                             }
@@ -119,12 +121,12 @@
             var sub = [];
 
             if (arr.length > 0) {
-                if (typeof arr[0] === 'string') {
+                if (typeof arr[0] === STRING) {
                     sub = arr.sort();
                 } else {
                     sub = arr.sort(function (a, b) {
 
-                        if (typeof fn !== 'function') {
+                        if (typeof fn !== FUNCTION) {
                             if (!isNaN(parseFloat(a))) {
                                 return parseFloat(a) - parseFloat(b);
                             }
@@ -155,7 +157,7 @@
             ///   <param name="fn" type="function">Condition</param> 
             /// </signature>
             ///	<returns type="item or null" />
-            if (typeof fn === 'function') {
+            if (typeof fn === FUNCTION) {
                 this.where(fn);
             }
 
@@ -175,7 +177,7 @@
             /// </signature>
             ///	<returns type="item or null" />
 
-            if (typeof fn === 'function') {
+            if (typeof fn === FUNCTION) {
                 this.where(fn);
             }
 
@@ -217,7 +219,7 @@
             ///   <param name="fn" type="function">Condition</param> 
             /// </signature>
             ///	<returns type="number" />
-            if (typeof fn !== 'function') {
+            if (typeof fn !== FUNCTION) {
                 return arr.length;
             }  
             return this.where(fn).toArray().length;
@@ -278,7 +280,7 @@
             /// </signature>
             ///	<returns type="this" />
 
-            if (typeof size === 'undefined') {
+            if (typeof size === UNDEFINED) {
                 size = 10;
             }
 
@@ -398,20 +400,34 @@
             return _index(fn, false);
         };
 
-        this.sum = function () {
+        this.sum = function (asIntegers) {
+            /// <signature>
             ///	<summary>
-            ///	Returns the sum all numeric values in the array
+            ///	Returns the sum all numeric values in the array.
             ///	</summary> 
-            ///	<returns type="int" />
+            ///	<returns type="float" />
+            /// </signature>
+            /// <signature>
+            ///	<summary>
+            ///	Returns the sum all numeric values in the array.
+            ///	</summary> 
+            /// <param name="asIntegers" type="boolean">Numbers as integers</param> 
+            ///	<returns type="int" /> 
+            /// </signature> 
             var count = 0;
+            var asInt = typeof asIntegers !== UNDEFINED;
+
             if (arr.length > 0) {
                 for (var i = 0, m = arr.length; i < m; i++) {
                     if (!isNaN(arr[i])) {
-                        count += parseInt(arr[i]);
+                        if (asInt) {
+                            count += parseInt(arr[i]);
+                        } else {
+                            count += parseFloat(arr[i]);
+                        } 
                     }
                 }
-            }
-
+            } 
             return count;
         };
  
