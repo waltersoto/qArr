@@ -23,15 +23,15 @@ SOFTWARE.
 */
 (function () {
 
-    var FUNCTION = 'function', UNDEFINED = 'undefined', STRING = 'string';
+    var isFunction = "function", isUndefined = "undefined", isString = "string";
    
-    var _qArr = function (_array) {
-        var arr = [];
+    var qArr = function (arr) {
+        var arrCopy = [];
 
-        if (_array.constructor !== Array) {
+        if (arr.constructor !== Array) {
             throw new Error("This object only works with Arrays");
         }
-        arr = _array.slice(0);
+        arrCopy = arr.slice(0);
         this.where = function (fn) {
             ///	<summary>
             ///	Returns subset where items meet criteria.
@@ -44,12 +44,12 @@ SOFTWARE.
             var sub = [];
             (function (a) {
                 for (var i = 0, max = a.length; i < max; i++) {
-                    if (fn(arr[i],i)) {
-                        sub.push(arr[i]);
+                    if (fn(arrCopy[i],i)) {
+                        sub.push(arrCopy[i]);
                     }
                 }
-            })(arr);
-            arr = sub;
+            })(arrCopy);
+            arrCopy = sub;
             return this;
         };
         this.forEach = function (fn) {
@@ -61,9 +61,9 @@ SOFTWARE.
             /// Ex. fn(val,index);
             ///	</param>
             ///	<returns type="this" />
-            if (arr.length > 0 && typeof fn === FUNCTION) {
-                for (var fi = 0, fm = arr.length; fi < fm; fi++) {
-                    fn(arr[fi],fi);
+            if (arrCopy.length > 0 && typeof fn === isFunction) {
+                for (var fi = 0, fm = arrCopy.length; fi < fm; fi++) {
+                    fn(arrCopy[fi],fi);
                 }
             }
             return this;
@@ -83,8 +83,8 @@ SOFTWARE.
                 for (var i = 0, max = a.length; i < max; i++) {
                     sub.push(fn(a[i],i));
                 }
-            })(arr);
-            arr = sub;
+            })(arrCopy);
+            arrCopy = sub;
 
             return this;
         };
@@ -99,13 +99,13 @@ SOFTWARE.
             ///	<returns type="this" />
             var sub = [];
 
-            if (arr.length > 0) {
-                if (typeof arr[0] === STRING) {
-                    sub = arr.sort().reverse();
+            if (arrCopy.length > 0) {
+                if (typeof arrCopy[0] === isString) {
+                    sub = arrCopy.sort().reverse();
                 } else {
-                    sub = arr.sort(function (a, b) {
+                    sub = arrCopy.sort(function (a, b) {
 
-                        if (typeof fn !== FUNCTION) {
+                        if (typeof fn !== isFunction) {
                             if (!isNaN(parseFloat(a))) {
                                 return -(parseFloat(a) - parseFloat(b));
                             }
@@ -121,7 +121,7 @@ SOFTWARE.
                     });
                 }
 
-                arr = sub;
+                arrCopy = sub;
             } 
 
             return this;
@@ -137,13 +137,13 @@ SOFTWARE.
             ///	<returns type="this" />
             var sub = [];
 
-            if (arr.length > 0) {
-                if (typeof arr[0] === STRING) {
-                    sub = arr.sort();
+            if (arrCopy.length > 0) {
+                if (typeof arrCopy[0] === isString) {
+                    sub = arrCopy.sort();
                 } else {
-                    sub = arr.sort(function (a, b) {
+                    sub = arrCopy.sort(function (a, b) {
 
-                        if (typeof fn !== FUNCTION) {
+                        if (typeof fn !== isFunction) {
                             if (!isNaN(parseFloat(a))) {
                                 return parseFloat(a) - parseFloat(b);
                             }
@@ -159,12 +159,11 @@ SOFTWARE.
    
                 }
 
-                arr = sub;
+                arrCopy = sub;
             }
 
             return this;
-        }
-
+        };
         this.first = function (fn) {
             /// <signature>
             ///   <summary>Returns first item in array (null if empty)</summary> 
@@ -174,16 +173,15 @@ SOFTWARE.
             ///   <param name="fn" type="function">Condition</param> 
             /// </signature>
             ///	<returns type="item or null" />
-            if (typeof fn === FUNCTION) {
+            if (typeof fn === isFunction) {
                 this.where(fn);
             }
 
-            if (arr.length > 0) {
-                return arr[0];
+            if (arrCopy.length > 0) {
+                return arrCopy[0];
             }
             return null;
-        }
-
+        };
         this.last = function (fn) {
             /// <signature>
             ///   <summary>Returns last item in array (null if empty)</summary> 
@@ -194,39 +192,36 @@ SOFTWARE.
             /// </signature>
             ///	<returns type="item or null" />
 
-            if (typeof fn === FUNCTION) {
+            if (typeof fn === isFunction) {
                 this.where(fn);
             }
 
-            if (arr.length > 0) {
-                return arr[arr.length - 1];
+            if (arrCopy.length > 0) {
+                return arrCopy[arrCopy.length - 1];
             }
              
             return null;
-        }
-
+        };
         this.single = function (fn) {
             ///   <summary>Returns single item that meets the condition (null if no item or more than one item meet the condition)</summary>
             ///   <param name="fn" type="function">Condition</param> 
             ///	  <returns type="item or null" />
             this.where(fn); 
-            if (arr.length == 1) {
-                return arr[0];
+            if (arrCopy.length === 1) {
+                return arrCopy[0];
             }
 
             return null;
-        }
-
+        };
         this.elementAt = function (index) {
             ///   <summary>The ElementAt operator retrieves the element at a given index in the collection.</summary>
             ///   <param name="index" type="number">Index in array (starting with 0)</param> 
             ///	  <returns type="item or null" />
-            if (arr.length > index) {
-                return arr[index];
+            if (arrCopy.length > index) {
+                return arrCopy[index];
             }
             return null;
-        }
-
+        };
         this.count = function (fn) {
             /// <signature>
             ///   <summary>Number of items in array</summary> 
@@ -236,12 +231,11 @@ SOFTWARE.
             ///   <param name="fn" type="function">Condition</param> 
             /// </signature>
             ///	<returns type="number" />
-            if (typeof fn !== FUNCTION) {
-                return arr.length;
+            if (typeof fn !== isFunction) {
+                return arrCopy.length;
             }  
             return this.where(fn).toArray().length;
-        }
-
+        };
         this.skip = function (num) {
             ///	<summary>
             ///	Skip n items in array
@@ -250,9 +244,9 @@ SOFTWARE.
             ///	 Number of items to skip
             ///	</param>
             ///	<returns type="this" />
-            if (arr.length > 0 && num > 0) {
-                if (arr.length > num) {
-                    arr = arr.slice(num);
+            if (arrCopy.length > 0 && num > 0) {
+                if (arrCopy.length > num) {
+                    arrCopy = arrCopy.slice(num);
                 }
             }
 
@@ -267,9 +261,9 @@ SOFTWARE.
             ///	Number of items to take
             ///	</param>
             ///	<returns type="this" />
-            if (arr.length > 0 && num > 0) {
-                if (arr.length > num) {
-                    arr = arr.slice(0, num);
+            if (arrCopy.length > 0 && num > 0) {
+                if (arrCopy.length > num) {
+                    arrCopy = arrCopy.slice(0, num);
                 }
             }
 
@@ -279,7 +273,7 @@ SOFTWARE.
         this.union = function (nArr) {
             ///   <summary>Concatenate a set of all distinct elements in two arrays</summary> 
             ///   <param name="nArr" type="array">New array</param>  
-            arr = arr.concat(nArr);
+            arrCopy = arrCopy.concat(nArr);
             this.distinct();
 
             return this;
@@ -297,12 +291,12 @@ SOFTWARE.
             /// </signature>
             ///	<returns type="this" />
 
-            if (typeof size === UNDEFINED) {
+            if (typeof size === isUndefined) {
                 size = 10;
             }
 
-            if (arr.length > 0) {
-                arr = this.skip((pg - 1) * size).take(size).toArray();
+            if (arrCopy.length > 0) {
+                arrCopy = this.skip((pg - 1) * size).take(size).toArray();
             }
 
             return this;
@@ -327,10 +321,10 @@ SOFTWARE.
             ///	Condition to match
             ///	</param>
             ///	<returns type="true/false" />
-            return contains(arr, item);
+            return contains(arrCopy, item);
         };
 
-        var _any = function (array, fn) {
+        var findAny = function (array, fn) {
             for (var i = 0, m = array.length; i < m; i++) {
                 if (fn(array[i])) {
                     return true;
@@ -348,23 +342,21 @@ SOFTWARE.
             ///	Condition to match
             ///	</param>
             ///	<returns type="true/false" /> 
-            return _any(arr, fn);
-        }
-
-        
+            return findAny(arrCopy, fn);
+        };
         this.distinct = function () {
             ///	<summary>
             ///	Returns only distinct items in the array
             ///	</summary> 
             ///	<returns type="this" />
             var uni = [];
-            if (arr.length > 0) {
-                for (var i = 0, m = arr.length; i < m; i++) { 
-                    if (!contains(uni, arr[i])) {
-                        uni.push(arr[i]);
+            if (arrCopy.length > 0) {
+                for (var i = 0, m = arrCopy.length; i < m; i++) { 
+                    if (!contains(uni, arrCopy[i])) {
+                        uni.push(arrCopy[i]);
                     } 
                 }
-                arr = uni.slice(0);
+                arrCopy = uni.slice(0);
             }
             return this;
         };
@@ -374,24 +366,24 @@ SOFTWARE.
             ///	Shuffle the elements in the array
             ///	</summary> 
             ///	<returns type="this" />
-            if (arr.length > 0) {
-                var n = arr.length; 
+            if (arrCopy.length > 0) {
+                var n = arrCopy.length; 
                 while (n) {
                     var j = Math.floor(Math.random() * (--n + 1));
-                    var tempN = arr[n];
-                    var tempJ = arr[j];
-                    arr[n] = tempJ;
-                    arr[j] = tempN;
+                    var tempN = arrCopy[n];
+                    var tempJ = arrCopy[j];
+                    arrCopy[n] = tempJ;
+                    arrCopy[j] = tempN;
                 }
             }
             return this;
             
         };
 
-        var _index = function (fn,last) {
+        var findIndex = function (fn,last) {
             var index = -1;
-            for (var i = 0, max = arr.length; i < max; i++) {
-                if (fn(arr[i])) {
+            for (var i = 0, max = arrCopy.length; i < max; i++) {
+                if (fn(arrCopy[i])) {
                     index = i;
                     if (!last) {
                       break;
@@ -406,7 +398,7 @@ SOFTWARE.
             ///	Find last index of a element based on a condition
             ///	</summary> 
             ///	<returns type="int" />
-            return _index(fn, true);
+            return findIndex(fn, true);
         };
 
         this.indexOf = function (fn) {
@@ -414,7 +406,7 @@ SOFTWARE.
             ///	Find first index of a element based on a condition
             ///	</summary> 
             ///	<returns type="int" />
-            return _index(fn, false);
+            return findIndex(fn, false);
         };
 
         this.sum = function (asIntegers) {
@@ -432,15 +424,15 @@ SOFTWARE.
             ///	<returns type="int" /> 
             /// </signature> 
             var count = 0;
-            var asInt = typeof asIntegers !== UNDEFINED;
+            var asInt = typeof asIntegers !== isUndefined;
 
-            if (arr.length > 0) {
-                for (var i = 0, m = arr.length; i < m; i++) {
-                    if (!isNaN(arr[i])) {
+            if (arrCopy.length > 0) {
+                for (var i = 0, m = arrCopy.length; i < m; i++) {
+                    if (!isNaN(arrCopy[i])) {
                         if (asInt) {
-                            count += parseInt(arr[i]);
+                            count += parseInt(arrCopy[i]);
                         } else {
-                            count += parseFloat(arr[i]);
+                            count += parseFloat(arrCopy[i]);
                         } 
                     }
                 }
@@ -456,30 +448,29 @@ SOFTWARE.
             ///	<returns type="array of {key:'',item[]}" />
           
             var uni = [];
-            if (arr.length > 0) {
-                for (var i = 0, m = arr.length; i < m; i++) {
-                    if (!contains(uni, fn(arr[i]))) {
-                        uni.push({key:fn(arr[i]),obj:arr[i]});
+            if (arrCopy.length > 0) {
+                for (var i = 0, m = arrCopy.length; i < m; i++) {
+                    if (!contains(uni, fn(arrCopy[i]))) {
+                        uni.push({key:fn(arrCopy[i]),obj:arrCopy[i]});
                     }
                 }
                   
                 var g = [];
                 for (var k = 0, mk = uni.length;k < mk;k++){
 
-                    if (!_any(g, function (n) {
-                        return n.key == uni[k].key;
+                    if (!findAny(g, function (n) {
+                        return n.key === uni[k].key;
                     })) {
                         g.push({ key: uni[k].key, item: [] }); 
                     }
                     
-                    var index = qA(g).indexOf(function (n) {  return n.key === uni[k].key; })
-                  
+                    var index = qA(g).indexOf(function (n) {  return n.key === uni[k].key; });
                     if (index !== -1 && index < uni.length) {
                         g[index].item.push(qA(uni).elementAt(k).obj);
                     }  
                 }
 
-                arr = g.slice(0);
+                arrCopy = g.slice(0);
             }
             
             return this;
@@ -495,13 +486,13 @@ SOFTWARE.
             if (excludeArr.constructor === Array) {
                 //Paramter must be an array
                 var uni = [];
-                if (arr.length > 0) {
-                    for (var i = 0, m = arr.length; i < m; i++) {
-                        if (!contains(excludeArr, arr[i])) {
-                            uni.push(arr[i]);
+                if (arrCopy.length > 0) {
+                    for (var i = 0, m = arrCopy.length; i < m; i++) {
+                        if (!contains(excludeArr, arrCopy[i])) {
+                            uni.push(arrCopy[i]);
                         }
                     }
-                    arr = uni.slice(0);
+                    arrCopy = uni.slice(0);
                 }
 
             }
@@ -512,7 +503,7 @@ SOFTWARE.
             ///	<summary>
             ///	Returns the transformed array
             ///	</summary>
-            return arr;
+            return arrCopy;
         };
 
     };
@@ -524,17 +515,17 @@ SOFTWARE.
         ///	<param name="arr" type="array">
         ///	Array
         ///	</param>
-        return new _qArr(arr);
+        return new qArr(arr);
 
     };
 
-    if (typeof window !== 'undefined') {
+    if (typeof window !== isUndefined) {
         if (!window.qA) {
             window.qA = qA;
         }
     } else {
         // Node.js export
-        if (typeof module !== 'undefined' && module.exports) {
+        if (typeof module !== isUndefined && module.exports) {
             module.exports = qA;
         }
     }
