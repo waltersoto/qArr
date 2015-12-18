@@ -439,7 +439,69 @@ SOFTWARE.
             } 
             return count;
         };
- 
+
+        this.min = function () {
+            ///	<summary>
+            ///	Returns lowest value in an array of numbers
+            ///	</summary> 
+            ///	<returns type="int" />
+            var count = 0;
+
+            if (arrCopy.length > 0) {
+                
+                for (var i = 0, m = arrCopy.length; i < m; i++) {
+                    if (!isNaN(arrCopy[i])) {
+                        if (count === 0) {
+                            count = parseInt(arrCopy[i]);
+                        }
+                        if (parseInt(arrCopy[i]) < count) {
+                            count = parseInt(arrCopy[i]);
+                        }
+
+                    }
+                }
+            }
+            return count;
+        };
+
+        this.max = function () {
+            ///	<summary>
+            ///	Returns highest value in an array of numbers
+            ///	</summary> 
+            ///	<returns type="int" />
+            var count = 0;
+
+            if (arrCopy.length > 0) {
+                for (var i = 0, m = arrCopy.length; i < m; i++) {
+                    if (!isNaN(arrCopy[i])) {
+                       
+                        if (parseInt(arrCopy[i]) > count) {
+                            count = parseInt(arrCopy[i]);
+                        }
+
+                    }
+                }
+            }
+            return count;
+        };
+
+        this.average = function () {
+            ///	<summary>
+            ///	Returns average value of an array of numbers
+            ///	</summary> 
+            ///	<returns type="float" />
+            var count = 0;
+            var counter = 0;
+            if (arrCopy.length > 0) {
+                for (var i = 0, m = arrCopy.length; i < m; i++) {
+                    if (!isNaN(arrCopy[i])) {
+                        counter++;
+                        count += parseFloat(arrCopy[i]); 
+                    }
+                }
+            }
+            return count / counter;
+        };
 
         this.groupBy = function (fn) { 
             ///	<summary>
