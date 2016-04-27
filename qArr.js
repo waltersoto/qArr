@@ -24,7 +24,7 @@ SOFTWARE.
 (function () {
 
     var isFunction = "function", isUndefined = "undefined", isString = "string";
-   
+
     var qArr = function (arr) {
         var arrCopy = [];
 
@@ -44,7 +44,7 @@ SOFTWARE.
             var sub = [];
             (function (a) {
                 for (var i = 0, max = a.length; i < max; i++) {
-                    if (fn(arrCopy[i],i)) {
+                    if (fn(arrCopy[i], i)) {
                         sub.push(arrCopy[i]);
                     }
                 }
@@ -63,7 +63,7 @@ SOFTWARE.
             ///	<returns type="this" />
             if (arrCopy.length > 0 && typeof fn === isFunction) {
                 for (var fi = 0, fm = arrCopy.length; fi < fm; fi++) {
-                    fn(arrCopy[fi],fi);
+                    fn(arrCopy[fi], fi);
                 }
             }
             return this;
@@ -81,7 +81,7 @@ SOFTWARE.
             var sub = [];
             (function (a) {
                 for (var i = 0, max = a.length; i < max; i++) {
-                    sub.push(fn(a[i],i));
+                    sub.push(fn(a[i], i));
                 }
             })(arrCopy);
             arrCopy = sub;
@@ -122,7 +122,7 @@ SOFTWARE.
                 }
 
                 arrCopy = sub;
-            } 
+            }
 
             return this;
         };
@@ -149,14 +149,14 @@ SOFTWARE.
                             }
 
                             return a.toUpperCase().localeCompare(b.toUpperCase());
-                        } 
+                        }
                         if (!isNaN(parseFloat(fn(a)))) {
                             return parseFloat(fn(a)) - parseFloat(fn(b));
                         }
 
                         return fn(a).toUpperCase().localeCompare(fn(b).toUpperCase());
                     });
-   
+
                 }
 
                 arrCopy = sub;
@@ -199,14 +199,14 @@ SOFTWARE.
             if (arrCopy.length > 0) {
                 return arrCopy[arrCopy.length - 1];
             }
-             
+
             return null;
         };
         this.single = function (fn) {
             ///   <summary>Returns single item that meets the condition (null if no item or more than one item meet the condition)</summary>
             ///   <param name="fn" type="function">Condition</param> 
             ///	  <returns type="item or null" />
-            this.where(fn); 
+            this.where(fn);
             if (arrCopy.length === 1) {
                 return arrCopy[0];
             }
@@ -233,7 +233,7 @@ SOFTWARE.
             ///	<returns type="number" />
             if (typeof fn !== isFunction) {
                 return arrCopy.length;
-            }  
+            }
             return this.where(fn).toArray().length;
         };
         this.skip = function (num) {
@@ -351,10 +351,10 @@ SOFTWARE.
             ///	<returns type="this" />
             var uni = [];
             if (arrCopy.length > 0) {
-                for (var i = 0, m = arrCopy.length; i < m; i++) { 
+                for (var i = 0, m = arrCopy.length; i < m; i++) {
                     if (!contains(uni, arrCopy[i])) {
                         uni.push(arrCopy[i]);
-                    } 
+                    }
                 }
                 arrCopy = uni.slice(0);
             }
@@ -367,7 +367,7 @@ SOFTWARE.
             ///	</summary> 
             ///	<returns type="this" />
             if (arrCopy.length > 0) {
-                var n = arrCopy.length; 
+                var n = arrCopy.length;
                 while (n) {
                     var j = Math.floor(Math.random() * (--n + 1));
                     var tempN = arrCopy[n];
@@ -377,17 +377,17 @@ SOFTWARE.
                 }
             }
             return this;
-            
+
         };
 
-        var findIndex = function (fn,last) {
+        var findIndex = function (fn, last) {
             var index = -1;
             for (var i = 0, max = arrCopy.length; i < max; i++) {
                 if (fn(arrCopy[i])) {
                     index = i;
                     if (!last) {
-                      break;
-                    }  
+                        break;
+                    }
                 }
             }
             return index;
@@ -433,10 +433,10 @@ SOFTWARE.
                             count += parseInt(arrCopy[i]);
                         } else {
                             count += parseFloat(arrCopy[i]);
-                        } 
+                        }
                     }
                 }
-            } 
+            }
             return count;
         };
 
@@ -448,7 +448,7 @@ SOFTWARE.
             var count = 0;
 
             if (arrCopy.length > 0) {
-                
+
                 for (var i = 0, m = arrCopy.length; i < m; i++) {
                     if (!isNaN(arrCopy[i])) {
                         if (count === 0) {
@@ -474,7 +474,7 @@ SOFTWARE.
             if (arrCopy.length > 0) {
                 for (var i = 0, m = arrCopy.length; i < m; i++) {
                     if (!isNaN(arrCopy[i])) {
-                       
+
                         if (parseInt(arrCopy[i]) > count) {
                             count = parseInt(arrCopy[i]);
                         }
@@ -496,45 +496,45 @@ SOFTWARE.
                 for (var i = 0, m = arrCopy.length; i < m; i++) {
                     if (!isNaN(arrCopy[i])) {
                         counter++;
-                        count += parseFloat(arrCopy[i]); 
+                        count += parseFloat(arrCopy[i]);
                     }
                 }
             }
             return count / counter;
         };
 
-        this.groupBy = function (fn) { 
+        this.groupBy = function (fn) {
             ///	<summary>
             ///	Retrieve a groups the elements from an array.
             ///	</summary> 
             ///	<returns type="array of {key:'',item[]}" />
-          
+
             var uni = [];
             if (arrCopy.length > 0) {
                 for (var i = 0, m = arrCopy.length; i < m; i++) {
                     if (!contains(uni, fn(arrCopy[i]))) {
-                        uni.push({key:fn(arrCopy[i]),obj:arrCopy[i]});
+                        uni.push({ key: fn(arrCopy[i]), obj: arrCopy[i] });
                     }
                 }
-                  
+
                 var g = [];
-                for (var k = 0, mk = uni.length;k < mk;k++){
+                for (var k = 0, mk = uni.length; k < mk; k++) {
 
                     if (!findAny(g, function (n) {
                         return n.key === uni[k].key;
                     })) {
-                        g.push({ key: uni[k].key, item: [] }); 
+                        g.push({ key: uni[k].key, item: [] });
                     }
-                    
-                    var index = qA(g).indexOf(function (n) {  return n.key === uni[k].key; });
+
+                    var index = qA(g).indexOf(function (n) { return n.key === uni[k].key; });
                     if (index !== -1 && index < uni.length) {
                         g[index].item.push(qA(uni).elementAt(k).obj);
-                    }  
+                    }
                 }
 
                 arrCopy = g.slice(0);
             }
-            
+
             return this;
         };
 
@@ -559,6 +559,55 @@ SOFTWARE.
 
             }
             return this;
+        };
+
+        this.aggregate = function (fn, seed) {
+            ///	<summary>
+            ///	Performs an operation on each element of the array carrying forward the result of the previous operation
+            ///	</summary>
+            /// <signature>
+            ///	<param name="fn" type="var">
+            ///	Function use to proccess each element.
+            /// Ex. The result of the following function will be
+            /// applied to the aggregatedValue.
+            /// fn(aggregatedValue, currentValue){ return aggregatedValue + currentValue; }
+            ///	</param>
+            /// </signature>
+            /// <signature>
+            ///	<param name="fn" type="var">
+            ///	Function use to proccess each element.
+            /// Ex. The result of the following function will be
+            /// applied to the aggregatedValue.
+            /// fn(aggregatedValue, currentValue){ return aggregatedValue + currentValue; }
+            ///	</param>
+            ///	<param name="seed" type="var">
+            ///	This is the first value to be assigned to the operation.
+            ///	</param>
+            /// </signature>
+            ///	<returns type="aggregated value" />
+            var agg;
+            if (typeof seed !== "undefined") {
+                agg = seed;
+            }
+            if (arrCopy.length > 0) {
+                if (typeof agg === "undefined") {
+                    if (!isNaN(arrCopy[0])) {
+                        agg = 0;
+                    } else if (typeof arrCopy[0] === "boolean") {
+                        agg = false;
+                    } else {
+                        agg = "";
+                    }
+                }
+
+                for (var i = 0, m = arrCopy.length; i < m; i++) {
+                    if (typeof fn === "function") {
+                        agg = fn(agg, arrCopy[i]);
+                    }
+                }
+            }
+
+            return agg;
         };
 
         this.toArray = function () {
@@ -591,7 +640,7 @@ SOFTWARE.
             module.exports = qA;
         }
     }
-     
-    
+
+
 
 })();
