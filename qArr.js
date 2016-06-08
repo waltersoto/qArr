@@ -32,6 +32,7 @@ SOFTWARE.
             throw new Error("This object only works with Arrays");
         }
         arrCopy = arr.slice(0);
+
         this.where = function (fn) {
             ///	<summary>
             ///	Returns subset where items meet criteria.
@@ -52,6 +53,7 @@ SOFTWARE.
             arrCopy = sub;
             return this;
         };
+
         this.forEach = function (fn) {
             ///	<summary>
             ///	Pass each element in the array through a function
@@ -164,6 +166,7 @@ SOFTWARE.
 
             return this;
         };
+
         this.first = function (fn) {
             /// <signature>
             ///   <summary>Returns first item in array (null if empty)</summary> 
@@ -182,6 +185,7 @@ SOFTWARE.
             }
             return null;
         };
+
         this.last = function (fn) {
             /// <signature>
             ///   <summary>Returns last item in array (null if empty)</summary> 
@@ -202,6 +206,7 @@ SOFTWARE.
 
             return null;
         };
+
         this.single = function (fn) {
             ///   <summary>Returns single item that meets the condition (null if no item or more than one item meet the condition)</summary>
             ///   <param name="fn" type="function">Condition</param> 
@@ -213,6 +218,7 @@ SOFTWARE.
 
             return null;
         };
+
         this.elementAt = function (index) {
             ///   <summary>The ElementAt operator retrieves the element at a given index in the collection.</summary>
             ///   <param name="index" type="number">Index in array (starting with 0)</param> 
@@ -222,6 +228,7 @@ SOFTWARE.
             }
             return null;
         };
+
         this.count = function (fn) {
             /// <signature>
             ///   <summary>Number of items in array</summary> 
@@ -236,6 +243,7 @@ SOFTWARE.
             }
             return this.where(fn).toArray().length;
         };
+
         this.skip = function (num) {
             ///	<summary>
             ///	Skip n items in array
@@ -325,6 +333,7 @@ SOFTWARE.
         };
 
         var findAny = function (array, fn) {
+            if (typeof fn !== "function") return false;
             for (var i = 0, m = array.length; i < m; i++) {
                 if (fn(array[i])) {
                     return true;
@@ -333,6 +342,21 @@ SOFTWARE.
             return false;
         };
 
+        this.all = function (fn) {
+            ///	<summary>
+            ///	Check if all items in the array match the condition
+            ///	</summary>
+            ///	<param name="fn" type="function">
+            ///	Condition to match
+            ///	</param>
+            ///	<returns type="true/false" /> 
+            if (arrCopy.length === 0) return false;
+            if (typeof fn !== "function") return false;
+            for (var i = 0; i < arrCopy.length; i++) {
+                if (!fn(arrCopy[i])) return false;
+            }
+            return true;
+        }
 
         this.any = function (fn) {
             ///	<summary>
@@ -640,7 +664,5 @@ SOFTWARE.
             module.exports = qA;
         }
     }
-
-
 
 })();
