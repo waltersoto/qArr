@@ -27,7 +27,9 @@ SOFTWARE.
 
     var qArr = function (arr) {
         var arrCopy = [];
-
+        if (typeof arr === "undefined" || arr === null) {
+            throw new Error("Undefined array");
+        }
         if (arr.constructor !== Array) {
             throw new Error("This object only works with Arrays");
         }
