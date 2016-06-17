@@ -25,15 +25,15 @@ SOFTWARE.
 
     var isFunction = "function", isUndefined = "undefined", isString = "string";
 
-    var qArr = function (arr) {
-        var arrCopy = [];
+    var QArr = function (arr) {
+
         if (typeof arr === "undefined" || arr === null) {
             throw new Error("Undefined array");
         }
         if (arr.constructor !== Array) {
             throw new Error("This object only works with Arrays");
         }
-        arrCopy = arr.slice(0);
+        var arrCopy = arr.slice(0);
 
         this.where = function (fn) {
             ///	<summary>
@@ -101,7 +101,7 @@ SOFTWARE.
             ///	Condition ex. function(n){ return n }
             ///	</param>
             ///	<returns type="this" />
-            var sub = [];
+            var sub;
 
             if (arrCopy.length > 0) {
                 if (typeof arrCopy[0] === isString) {
@@ -139,7 +139,7 @@ SOFTWARE.
             ///	Condition ex. function(n){ return n }
             ///	</param>
             ///	<returns type="this" />
-            var sub = [];
+            var sub;
 
             if (arrCopy.length > 0) {
                 if (typeof arrCopy[0] === isString) {
@@ -221,14 +221,18 @@ SOFTWARE.
             return null;
         };
 
+        var getElementAt = function (index, elemArray) {
+
+            if (elemArray.length > index) return arr[index];
+
+            return null;
+        };
+
         this.elementAt = function (index) {
             ///   <summary>The ElementAt operator retrieves the element at a given index in the collection.</summary>
             ///   <param name="index" type="number">Index in array (starting with 0)</param> 
             ///	  <returns type="item or null" />
-            if (arrCopy.length > index) {
-                return arrCopy[index];
-            }
-            return null;
+            return getElementAt(index, arrCopy);
         };
 
         this.count = function (fn) {
@@ -406,10 +410,10 @@ SOFTWARE.
 
         };
 
-        var findIndex = function (fn, last) {
+        var indexInArr = function (fn, last, searchArray) {
             var index = -1;
-            for (var i = 0, max = arrCopy.length; i < max; i++) {
-                if (fn(arrCopy[i])) {
+            for (var i = 0, max = searchArray.length; i < max; i++) {
+                if (fn(searchArray[i])) {
                     index = i;
                     if (!last) {
                         break;
@@ -424,15 +428,15 @@ SOFTWARE.
             ///	Find last index of a element based on a condition
             ///	</summary> 
             ///	<returns type="int" />
-            return findIndex(fn, true);
+            return indexInArr(fn, true, arrCopy);
         };
 
         this.indexOf = function (fn) {
             ///	<summary>
             ///	Find first index of a element based on a condition
             ///	</summary> 
-            ///	<returns type="int" />
-            return findIndex(fn, false);
+            ///	<returns type="int" /> 
+            return indexInArr(fn, false, arrCopy);
         };
 
         this.sum = function (asIntegers) {
@@ -545,17 +549,23 @@ SOFTWARE.
 
                 var g = [];
                 for (var k = 0, mk = uni.length; k < mk; k++) {
+                    (function (localKey) {
+                        if (!findAny(g, function (n) {
+                            return n.key === uni[localKey].key;
+                        })) {
+                            g.push({ key: uni[localKey].key, item: [] });
+                        }
 
-                    if (!findAny(g, function (n) {
-                        return n.key === uni[k].key;
-                    })) {
-                        g.push({ key: uni[k].key, item: [] });
-                    }
+                        var index = indexInArr(function (n) { return n.key === uni[localKey].key; }, false, g);
+                        if (index !== -1 && index < uni.length) {
+                            var located = getElementAt(localKey, uni);
+                            if (located !== null && typeof located !== "undefined") {
+                                g[index].item.push(located.obj);
+                            }
 
-                    var index = qA(g).indexOf(function (n) { return n.key === uni[k].key; });
-                    if (index !== -1 && index < uni.length) {
-                        g[index].item.push(qA(uni).elementAt(k).obj);
-                    }
+                        }
+
+                    })(k);
                 }
 
                 arrCopy = g.slice(0);
@@ -633,7 +643,7 @@ SOFTWARE.
                 }
             }
 
-            return agg;
+            return agg || 0;
         };
 
         this.toArray = function () {
@@ -652,7 +662,7 @@ SOFTWARE.
         ///	<param name="arr" type="array">
         ///	Array
         ///	</param>
-        return new qArr(arr);
+        return new QArr(arr);
 
     };
 
