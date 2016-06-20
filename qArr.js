@@ -30,9 +30,11 @@ SOFTWARE.
         if (typeof arr === "undefined" || arr === null) {
             throw new Error("Undefined array");
         }
+
         if (arr.constructor !== Array) {
             throw new Error("This object only works with Arrays");
         }
+
         var arrCopy = arr.slice(0);
 
         this.where = function (fn) {
@@ -284,6 +286,29 @@ SOFTWARE.
             return this;
         };
 
+        this.takeWhile = function (fn) {
+            ///	<summary>
+            ///	Take elements while a predicate matches (fn)
+            ///	</summary>
+            ///	<param name="fn" type="function">
+            ///	Function that returns result of predicate
+            ///	</param>
+            ///	<returns type="this" />
+            if (typeof fn !== isFunction) return this;
+            if (arrCopy.length === 0) return this;
+            var newArray = [];
+            for (var i = 0, max = arrCopy.length; i < max; i++) {
+                if (fn(arrCopy[i])) {
+                    newArray.push(arrCopy[i]);
+                } else {
+                    break;
+                }
+            }
+            arrCopy.length = 0;
+            arrCopy.push.apply(arrCopy, newArray);
+            return this;
+        };
+
         this.union = function (nArr) {
             ///   <summary>Concatenate a set of all distinct elements in two arrays</summary> 
             ///   <param name="nArr" type="array">New array</param>  
@@ -374,6 +399,7 @@ SOFTWARE.
             ///	<returns type="true/false" /> 
             return findAny(arrCopy, fn);
         };
+
         this.distinct = function () {
             ///	<summary>
             ///	Returns only distinct items in the array
@@ -504,14 +530,13 @@ SOFTWARE.
             if (arrCopy.length > 0) {
                 for (var i = 0, m = arrCopy.length; i < m; i++) {
                     if (!isNaN(arrCopy[i])) {
-
                         if (parseInt(arrCopy[i]) > count) {
                             count = parseInt(arrCopy[i]);
                         }
-
                     }
                 }
             }
+
             return count;
         };
 
@@ -562,7 +587,6 @@ SOFTWARE.
                             if (located !== null && typeof located !== "undefined") {
                                 g[index].item.push(located.obj);
                             }
-
                         }
 
                     })(k);
