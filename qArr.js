@@ -26,7 +26,7 @@ SOFTWARE.
     var isFunction = "function", isUndefined = "undefined", isString = "string";
 
     var QArr = function (arr) {
-
+        var me = this;
         if (typeof arr === "undefined" || arr === null) {
             throw new Error("Undefined array");
         }
@@ -269,6 +269,28 @@ SOFTWARE.
             return this;
         };
 
+        this.skipWhile = function (fn) {
+            ///	<summary>
+            ///	Skip elements while a predicate matches (fn)
+            ///	</summary>
+            ///	<param name="fn" type="function">
+            ///	Function that returns result of predicate
+            ///	</param>
+            ///	<returns type="this" />
+            if (typeof fn !== isFunction) return this;
+            if (arrCopy.length === 0) return this;
+            var num = 0;
+            for (var i = 0, max = arrCopy.length; i < max; i++) {
+                if (fn(arrCopy[i])) {
+                    num++;
+                } else {
+                    break;
+                }
+            }
+            me.skip(num);
+            return this;
+        };
+
         this.take = function (num) {
             ///	<summary>
             ///	Take top n items
@@ -296,16 +318,15 @@ SOFTWARE.
             ///	<returns type="this" />
             if (typeof fn !== isFunction) return this;
             if (arrCopy.length === 0) return this;
-            var newArray = [];
+            var num = 0;
             for (var i = 0, max = arrCopy.length; i < max; i++) {
                 if (fn(arrCopy[i])) {
-                    newArray.push(arrCopy[i]);
+                    num++;
                 } else {
                     break;
                 }
             }
-            arrCopy.length = 0;
-            arrCopy.push.apply(arrCopy, newArray);
+            me.take(num);
             return this;
         };
 
