@@ -30,7 +30,6 @@ SOFTWARE.
         if (typeof arr === "undefined" || arr === null) {
             throw new Error("Undefined array");
         }
-
         if (arr.constructor !== Array) {
             throw new Error("This object only works with Arrays");
         }
@@ -332,7 +331,8 @@ SOFTWARE.
 
         this.union = function (nArr) {
             ///   <summary>Concatenate a set of all distinct elements in two arrays</summary> 
-            ///   <param name="nArr" type="array">New array</param>  
+            ///   <param name="nArr" type="array">New array</param> 
+
             arrCopy = arrCopy.concat(nArr);
             this.distinct();
 
@@ -365,7 +365,6 @@ SOFTWARE.
         var contains = function (array, o) {
             for (var s = 0, sm = array.length; s < sm; s++) {
                 if (JSON.stringify(array[s]) === JSON.stringify(o)) {
-
                     return true;
                 }
             }
@@ -582,29 +581,30 @@ SOFTWARE.
         this.groupBy = function (fn) {
             ///	<summary>
             ///	Retrieve a groups the elements from an array.
-            ///	</summary> 
+            /// Collection will be transformed to an array of {key:'',item[]}
+            ///	</summary>  
             ///	<returns type="array of {key:'',item[]}" />
+            ///	<returns type="this" />
 
-            var uni = [];
+            var grouped = [];
             if (arrCopy.length > 0) {
                 for (var i = 0, m = arrCopy.length; i < m; i++) {
-                    if (!contains(uni, fn(arrCopy[i]))) {
-                        uni.push({ key: fn(arrCopy[i]), obj: arrCopy[i] });
+                    if (!contains(grouped, fn(arrCopy[i]))) {
+                        grouped.push({ key: fn(arrCopy[i]), obj: arrCopy[i] });
                     }
                 }
 
                 var g = [];
-                for (var k = 0, mk = uni.length; k < mk; k++) {
+                for (var k = 0, mk = grouped.length; k < mk; k++) {
                     (function (localKey) {
                         if (!findAny(g, function (n) {
-                            return n.key === uni[localKey].key;
+                            return n.key === grouped[localKey].key;
                         })) {
-                            g.push({ key: uni[localKey].key, item: [] });
+                            g.push({ key: grouped[localKey].key, item: [] });
                         }
-
-                        var index = indexInArr(function (n) { return n.key === uni[localKey].key; }, false, g);
-                        if (index !== -1 && index < uni.length) {
-                            var located = getElementAt(localKey, uni);
+                        var index = indexInArr(function (n) { return n.key === grouped[localKey].key; }, false, g);
+                        if (index !== -1 && index < grouped.length) {
+                            var located = getElementAt(localKey, grouped);
                             if (located !== null && typeof located !== "undefined") {
                                 g[index].item.push(located.obj);
                             }
@@ -626,6 +626,8 @@ SOFTWARE.
             ///	<param name="arr" type="excludeArr">
             ///	Array to exclude from main array
             ///	</param>
+            ///	<returns type="this" />
+
             if (excludeArr.constructor === Array) {
                 //Paramter must be an array
                 var uni = [];
@@ -689,6 +691,79 @@ SOFTWARE.
             }
 
             return agg || 0;
+        };
+
+        this.reverse = function () {
+            ///	<summary>
+            ///	Reverse order of the collection.
+            ///	</summary>
+            ///	<returns type="this" />
+
+            if (arrCopy.length === 0) return this;
+            arrCopy.reverse();
+            return this;
+        };
+
+        this.zip = function (array, fn) {
+            ///	<summary>
+            ///	Processes each element in two series together
+            ///	</summary>
+            ///	<param name="array" type="array">
+            ///	Array used to process with internal collection
+            ///	</param>
+            ///	<param name="fn" type="function">
+            /// The result of this function will be assigned to each element in the collection.
+            /// ex. function([array parameter item],[internal collection item]);
+            ///	</param>
+            ///	<returns type="this" />
+
+            if (array.constructor !== Array) {
+                throw new Error("This method expects an Array");
+            }
+            if (typeof fn !== "function") return this;
+            if (arrCopy.length === 0) return this;
+            var size = array.length;
+            for (var i = 0, m = arrCopy.length; i < m; i++) {
+                if (i >= size) {
+                    arrCopy.splice(i, 1);
+                } else {
+                    arrCopy[i] = fn(array[i], arrCopy[i]);
+                }
+            }
+            return this;
+        };
+
+        this.intersect = function (array) {
+            ///	<summary>
+            ///	Create a subset of each array that is found in both arrays
+            ///	</summary>
+            ///	<param name="array" type="array">
+            ///	Array used to find the subset
+            ///	</param>
+            ///	<returns type="this" />
+            if (array.constructor !== Array) {
+                throw new Error("This method expects an Array");
+            }
+            if (arrCopy.length === 0) return this;
+            var removeList = [];
+            for (var i = 0, m = arrCopy.length; i < m; i++) {
+                var remove = true;
+                for (var s = 0, sM = array.length; s < sM; s++) {
+                    if (JSON.stringify(arrCopy[i]) === JSON.stringify(array[s])) {
+                        remove = false;
+                        break;
+                    }
+                }
+                if (remove) {
+                    removeList.push(i);
+                }
+            }
+            if (removeList.length === 0) return this;
+            for (var r = 0, rM = removeList.length; r < rM; r++) {
+                arrCopy.splice(removeList[r], 1);
+            }
+
+            return this;
         };
 
         this.toArray = function () {
