@@ -45,15 +45,20 @@ SOFTWARE.
             /// or function(item,index){ return index % 2 == 0; }
             ///	</param>
             ///	<returns type="this" />
-            var sub = [];
-            (function (a) {
-                for (var i = 0, max = a.length; i < max; i++) {
-                    if (fn(arrCopy[i], i)) {
-                        sub.push(arrCopy[i]);
+            if (typeof fn !== "function") return this;
+            if (!Array.prototype.filter) {
+                var sub = [];
+                (function (a) {
+                    for (var i = 0, max = a.length; i < max; i++) {
+                        if (fn(arrCopy[i], i)) {
+                            sub.push(arrCopy[i]);
+                        }
                     }
-                }
-            })(arrCopy);
-            arrCopy = sub;
+                })(arrCopy);
+                arrCopy = sub;
+            } else {
+                arrCopy = arrCopy.filter(fn);
+            }
             return this;
         };
 
@@ -83,14 +88,18 @@ SOFTWARE.
             ///        or function(item,index){ return 'item '+item+' as string'; }
             ///	</param>
             ///	<returns type="this" />
+            if (typeof fn !== "function") return this;
             var sub = [];
-            (function (a) {
-                for (var i = 0, max = a.length; i < max; i++) {
-                    sub.push(fn(a[i], i));
-                }
-            })(arrCopy);
-            arrCopy = sub;
-
+            if (!Array.prototype.map) {
+                (function (a) {
+                    for (var i = 0, max = a.length; i < max; i++) {
+                        sub.push(fn(a[i], i));
+                    }
+                })(arrCopy);
+                arrCopy = sub;
+            } else {
+                arrCopy = arrCopy.map(fn);
+            }
             return this;
         };
 
@@ -668,29 +677,31 @@ SOFTWARE.
             ///	</param>
             /// </signature>
             ///	<returns type="aggregated value" />
-            var agg;
+            if (typeof fn !== "function") return 0;
+            var aggregated;
             if (typeof seed !== "undefined") {
-                agg = seed;
+                aggregated = seed;
             }
             if (arrCopy.length > 0) {
-                if (typeof agg === "undefined") {
+                if (typeof aggregated === "undefined") {
                     if (!isNaN(arrCopy[0])) {
-                        agg = 0;
+                        aggregated = 0;
                     } else if (typeof arrCopy[0] === "boolean") {
-                        agg = false;
+                        aggregated = false;
                     } else {
-                        agg = "";
+                        aggregated = "";
                     }
                 }
-
-                for (var i = 0, m = arrCopy.length; i < m; i++) {
-                    if (typeof fn === "function") {
-                        agg = fn(agg, arrCopy[i]);
+                if (!Array.prototype.reduce) {
+                    for (var i = 0, m = arrCopy.length; i < m; i++) {
+                        aggregated = fn(aggregated, arrCopy[i]);
                     }
+                } else {
+                    aggregated = arrCopy.reduce(fn);
                 }
             }
 
-            return agg || 0;
+            return aggregated || 0;
         };
 
         this.reverse = function () {
