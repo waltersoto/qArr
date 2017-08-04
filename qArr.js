@@ -81,11 +81,10 @@ SOFTWARE.
 
         this.select = function (fn) {
             ///	<summary>
-            ///	Transform selected items to a new form
+            ///	Higher-order function that applies a given function (fn) to each element of a list.
             ///	</summary>
             ///	<param name="fn" type="function">
-            ///	Format condition ex. function(item){ return 'item: '+item+' as string'; } 
-            ///        or function(item,index){ return 'item '+item+' as string'; }
+            ///	Function to project each element to be flatten (ex. function(x){ return x + 1; })
             ///	</param>
             ///	<returns type="this" />
             if (typeof fn !== "function") return this;
@@ -100,6 +99,29 @@ SOFTWARE.
             } else {
                 arrCopy = arrCopy.map(fn);
             }
+            return this;
+        };
+
+        this.selectMany = function (fn) {
+            ///	<summary>
+            ///	Projects each element of a sequence to an array and flattens the resulting sequences into one sequence.
+            ///	</summary>
+            ///	<param name="fn" type="function">Function to project each element to be flatten (ex. function(x){ return x + 1; })</param>
+            ///	<returns type="this" />
+            if (typeof fn !== "function") return this;
+            var sub = [];
+            (function (a) {
+                var flattedCounter = 0;
+                for (var i = 0, max = a.length; i < max; i++) {
+                    if (a[i].constructor === Array) {
+                        for (var sindex = 0, smax = a[i].length; sindex < smax; sindex++) {
+                            sub.push(fn(a[i][sindex], flattedCounter));
+                            flattedCounter++;
+                        }
+                    }
+                }
+            })(arrCopy);
+            arrCopy = sub;
             return this;
         };
 
@@ -628,7 +650,7 @@ SOFTWARE.
             return this;
         };
 
-        this.except = function (excludeArr) {
+        this.except = function (excludedArray) {
             ///	<summary>
             ///	Produce an array of the differences between main array and the parameter array.
             ///	</summary>
@@ -637,12 +659,12 @@ SOFTWARE.
             ///	</param>
             ///	<returns type="this" />
 
-            if (excludeArr.constructor === Array) {
+            if (excludedArray.constructor === Array) {
                 //Paramter must be an array
                 var uni = [];
                 if (arrCopy.length > 0) {
                     for (var i = 0, m = arrCopy.length; i < m; i++) {
-                        if (!contains(excludeArr, arrCopy[i])) {
+                        if (!contains(excludedArray, arrCopy[i])) {
                             uni.push(arrCopy[i]);
                         }
                     }
