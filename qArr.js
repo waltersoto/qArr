@@ -88,14 +88,14 @@ SOFTWARE.
             ///	</param>
             ///	<returns type="this" />
             if (typeof fn !== "function") return this;
-            var sub = [];
+            var subset = [];
             if (!Array.prototype.map) {
                 (function (a) {
                     for (var i = 0, max = a.length; i < max; i++) {
-                        sub.push(fn(a[i], i));
+                        subset.push(fn(a[i], i));
                     }
                 })(arrCopy);
-                arrCopy = sub;
+                arrCopy = subset;
             } else {
                 arrCopy = arrCopy.map(fn);
             }
@@ -109,19 +109,19 @@ SOFTWARE.
             ///	<param name="fn" type="function">Function to project each element to be flatten (ex. function(x){ return x + 1; })</param>
             ///	<returns type="this" />
             if (typeof fn !== "function") return this;
-            var sub = [];
+            var subset = [];
             (function (a) {
                 var flattedCounter = 0;
                 for (var i = 0, max = a.length; i < max; i++) {
                     if (a[i].constructor === Array) {
                         for (var sindex = 0, smax = a[i].length; sindex < smax; sindex++) {
-                            sub.push(fn(a[i][sindex], flattedCounter));
+                            subset.push(fn(a[i][sindex], flattedCounter));
                             flattedCounter++;
                         }
                     }
                 }
             })(arrCopy);
-            arrCopy = sub;
+            arrCopy = subset;
             return this;
         };
 
@@ -133,13 +133,12 @@ SOFTWARE.
             ///	Condition ex. function(n){ return n }
             ///	</param>
             ///	<returns type="this" />
-            var sub;
-
+            var subset;
             if (arrCopy.length > 0) {
                 if (typeof arrCopy[0] === isString) {
-                    sub = arrCopy.sort().reverse();
+                    subset = arrCopy.sort().reverse();
                 } else {
-                    sub = arrCopy.sort(function (a, b) {
+                    subset = arrCopy.sort(function (a, b) {
 
                         if (typeof fn !== isFunction) {
                             if (!isNaN(parseFloat(a))) {
@@ -157,7 +156,7 @@ SOFTWARE.
                     });
                 }
 
-                arrCopy = sub;
+                arrCopy = subset;
             }
 
             return this;
@@ -171,13 +170,12 @@ SOFTWARE.
             ///	Condition ex. function(n){ return n }
             ///	</param>
             ///	<returns type="this" />
-            var sub;
-
+            var subset;
             if (arrCopy.length > 0) {
                 if (typeof arrCopy[0] === isString) {
-                    sub = arrCopy.sort();
+                    subset = arrCopy.sort();
                 } else {
-                    sub = arrCopy.sort(function (a, b) {
+                    subset = arrCopy.sort(function (a, b) {
 
                         if (typeof fn !== isFunction) {
                             if (!isNaN(parseFloat(a))) {
@@ -195,7 +193,7 @@ SOFTWARE.
 
                 }
 
-                arrCopy = sub;
+                arrCopy = subset;
             }
 
             return this;
@@ -213,7 +211,6 @@ SOFTWARE.
             if (typeof fn === isFunction) {
                 this.where(fn);
             }
-
             if (arrCopy.length > 0) {
                 return arrCopy[0];
             }
@@ -228,12 +225,10 @@ SOFTWARE.
             ///   <summary>Returns last item that meets the condition (null if empty)</summary>
             ///   <param name="fn" type="function">Condition</param> 
             /// </signature>
-            ///	<returns type="item or null" />
-
+            ///	<returns type="item or null" /> 
             if (typeof fn === isFunction) {
                 this.where(fn);
             }
-
             if (arrCopy.length > 0) {
                 return arrCopy[arrCopy.length - 1];
             }
@@ -254,9 +249,7 @@ SOFTWARE.
         };
 
         var getElementAt = function (index, elemArray) {
-
             if (elemArray.length > index) return arr[index];
-
             return null;
         };
 
@@ -295,7 +288,6 @@ SOFTWARE.
                     arrCopy = arrCopy.slice(num);
                 }
             }
-
             return this;
         };
 
@@ -334,7 +326,6 @@ SOFTWARE.
                     arrCopy = arrCopy.slice(0, num);
                 }
             }
-
             return this;
         };
 
@@ -380,16 +371,13 @@ SOFTWARE.
             ///   <summary>Array paging with default page size (10)</summary> 
             ///   <param name="pg" type="number">Page number</param>  
             /// </signature>
-            ///	<returns type="this" />
-
+            ///	<returns type="this" /> 
             if (typeof size === isUndefined) {
                 size = 10;
             }
-
             if (arrCopy.length > 0) {
                 arrCopy = this.skip((pg - 1) * size).take(size).toArray();
             }
-
             return this;
         };
 
@@ -456,14 +444,14 @@ SOFTWARE.
             ///	Returns only distinct items in the array
             ///	</summary> 
             ///	<returns type="this" />
-            var uni = [];
+            var uniqueItems = [];
             if (arrCopy.length > 0) {
                 for (var i = 0, m = arrCopy.length; i < m; i++) {
-                    if (!contains(uni, arrCopy[i])) {
-                        uni.push(arrCopy[i]);
+                    if (!contains(uniqueItems, arrCopy[i])) {
+                        uniqueItems.push(arrCopy[i]);
                     }
                 }
-                arrCopy = uni.slice(0);
+                arrCopy = uniqueItems.slice(0);
             }
             return this;
         };
@@ -553,9 +541,7 @@ SOFTWARE.
             ///	</summary> 
             ///	<returns type="int" />
             var count = 0;
-
             if (arrCopy.length > 0) {
-
                 for (var i = 0, m = arrCopy.length; i < m; i++) {
                     if (!isNaN(arrCopy[i])) {
                         if (count === 0) {
@@ -564,7 +550,6 @@ SOFTWARE.
                         if (parseInt(arrCopy[i]) < count) {
                             count = parseInt(arrCopy[i]);
                         }
-
                     }
                 }
             }
@@ -577,7 +562,6 @@ SOFTWARE.
             ///	</summary> 
             ///	<returns type="int" />
             var count = 0;
-
             if (arrCopy.length > 0) {
                 for (var i = 0, m = arrCopy.length; i < m; i++) {
                     if (!isNaN(arrCopy[i])) {
@@ -587,7 +571,6 @@ SOFTWARE.
                     }
                 }
             }
-
             return count;
         };
 
@@ -615,8 +598,7 @@ SOFTWARE.
             /// Collection will be transformed to an array of {key:'',item[]}
             ///	</summary>  
             ///	<returns type="array of {key:'',item[]}" />
-            ///	<returns type="this" />
-
+            ///	<returns type="this" /> 
             var grouped = [];
             if (arrCopy.length > 0) {
                 for (var i = 0, m = arrCopy.length; i < m; i++) {
@@ -624,29 +606,25 @@ SOFTWARE.
                         grouped.push({ key: fn(arrCopy[i]), obj: arrCopy[i] });
                     }
                 }
-
-                var g = [];
-                for (var k = 0, mk = grouped.length; k < mk; k++) {
+                var groupedBy = [];
+                for (var groupKey = 0, groupKeyMax = grouped.length; groupKey < groupKeyMax; groupKey++) {
                     (function (localKey) {
-                        if (!findAny(g, function (n) {
+                        if (!findAny(groupedBy, function (n) {
                             return n.key === grouped[localKey].key;
                         })) {
-                            g.push({ key: grouped[localKey].key, item: [] });
+                            groupedBy.push({ key: grouped[localKey].key, item: [] });
                         }
-                        var index = indexInArr(function (n) { return n.key === grouped[localKey].key; }, false, g);
+                        var index = indexInArr(function (n) { return n.key === grouped[localKey].key; }, false, groupedBy);
                         if (index !== -1 && index < grouped.length) {
                             var located = getElementAt(localKey, grouped);
                             if (located !== null && typeof located !== "undefined") {
-                                g[index].item.push(located.obj);
+                                groupedBy[index].item.push(located.obj);
                             }
                         }
-
-                    })(k);
+                    })(groupKey);
                 }
-
-                arrCopy = g.slice(0);
+                arrCopy = groupedBy.slice(0);
             }
-
             return this;
         };
 
@@ -657,18 +635,17 @@ SOFTWARE.
             ///	<param name="arr" type="excludeArr">
             ///	Array to exclude from main array
             ///	</param>
-            ///	<returns type="this" />
-
+            ///	<returns type="this" /> 
             if (excludedArray.constructor === Array) {
                 //Paramter must be an array
-                var uni = [];
+                var notExcluded = [];
                 if (arrCopy.length > 0) {
                     for (var i = 0, m = arrCopy.length; i < m; i++) {
                         if (!contains(excludedArray, arrCopy[i])) {
-                            uni.push(arrCopy[i]);
+                            notExcluded.push(arrCopy[i]);
                         }
                     }
-                    arrCopy = uni.slice(0);
+                    arrCopy = notExcluded.slice(0);
                 }
 
             }
@@ -722,7 +699,6 @@ SOFTWARE.
                     aggregated = arrCopy.reduce(fn);
                 }
             }
-
             return aggregated || 0;
         };
 
