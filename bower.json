@@ -1,6 +1,6 @@
 {
   "name": "qArr",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Query data from array in JavaScript similar to Linq",
   "keywords": [
     "Linq",
@@ -12,11 +12,11 @@
   "main": "qarr.js",
   "license": "MIT",
   "homepage": "https://github.com/waltersoto/qArr",
-  "_release": "0.0.11",
+  "_release": "0.0.12",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.11",
-    "commit": "afb35312f578f46b7eb36fc494b084d674a8f096"
+    "tag": "0.0.12",
+    "commit": "fff6d3a3d01b0f364315132b989fa95300eff39b"
   },
   "ignore": [
     "**/.*",
