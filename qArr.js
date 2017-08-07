@@ -775,6 +775,27 @@ SOFTWARE.
             return this;
         };
 
+        this.sequenceEqual = function (array) {
+            ///	<summary>
+            ///	Compare if two arrays are the same (content and sequence)
+            ///	</summary>
+            ///	<param name="array" type="array">
+            ///	Array to compare
+            ///	</param>
+            ///	<returns type="result" />
+            if (array.constructor !== Array) {
+                throw new Error("This method expects an Array");
+            }
+            if (arrCopy.length === 0 && array.length === 0) return true;
+            if (arrCopy.length !== array.length) return false;
+            for (var i = 0, max = arrCopy.length; i < max; i++) {
+                if (arrCopy[i] !== array[i]) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
         this.toArray = function () {
             ///	<summary>
             ///	Returns the transformed array
