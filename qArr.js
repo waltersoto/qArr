@@ -793,6 +793,31 @@ SOFTWARE.
             return true;
         };
 
+        this.range = function (startNumber, endNumber) {
+            ///	<summary>
+            ///	Generates a sequence of integral numbers within a specified range.
+            /// Ex. qA([]).range(1, 10).forEach(function (x) { });
+            ///     qA([]).range(1, 10).select(function (x) { return x + 1; });
+            ///     qA([]).range(1, 10).toArray();
+            ///	</summary>
+            ///	<param name="startNumber" type="number">
+            ///	Number to start the sequence.
+            ///	</param>
+            ///	<param name="endNumber" type="number">
+            ///	Number to end the sequence.
+            ///	</param>
+            ///	<returns type="this" /> 
+            if (isNaN(startNumber) || isNaN(endNumber)) return this;
+            if (endNumber <= startNumber) return this;
+            arrCopy.splice(0);
+
+            for (var i = startNumber; i <= endNumber; i++) {
+                arrCopy.push(i);
+            }
+
+            return this;
+        };
+
         this.toArray = function () {
             ///	<summary>
             ///	Returns the transformed array
