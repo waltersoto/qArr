@@ -47,15 +47,15 @@ SOFTWARE.
             ///	<returns type="this" />
             if (typeof fn !== "function") return this;
             if (!Array.prototype.filter) {
-                var sub = [];
+                var subset = [];
                 (function (a) {
                     for (var i = 0, max = a.length; i < max; i++) {
                         if (fn(arrCopy[i], i)) {
-                            sub.push(arrCopy[i]);
+                            subset.push(arrCopy[i]);
                         }
                     }
                 })(arrCopy);
-                arrCopy = sub;
+                arrCopy = subset;
             } else {
                 arrCopy = arrCopy.filter(fn);
             }
@@ -72,8 +72,8 @@ SOFTWARE.
             ///	</param>
             ///	<returns type="this" />
             if (arrCopy.length > 0 && typeof fn === isFunction) {
-                for (var fi = 0, fm = arrCopy.length; fi < fm; fi++) {
-                    fn(arrCopy[fi], fi);
+                for (var i = 0, max = arrCopy.length; i < max; i++) {
+                    fn(arrCopy[i], i);
                 }
             }
             return this;
@@ -139,7 +139,6 @@ SOFTWARE.
                     subset = arrCopy.sort().reverse();
                 } else {
                     subset = arrCopy.sort(function (a, b) {
-
                         if (typeof fn !== isFunction) {
                             if (!isNaN(parseFloat(a))) {
                                 return -(parseFloat(a) - parseFloat(b));
@@ -155,7 +154,6 @@ SOFTWARE.
 
                     });
                 }
-
                 arrCopy = subset;
             }
 
@@ -723,9 +721,8 @@ SOFTWARE.
             ///	<param name="fn" type="function">
             /// The result of this function will be assigned to each element in the collection.
             /// ex. function([array parameter item],[internal collection item]);
-            ///	</param>
+            ///	</param> 
             ///	<returns type="this" />
-
             if (array.constructor !== Array) {
                 throw new Error("This method expects an Array");
             }
@@ -802,7 +799,6 @@ SOFTWARE.
             ///	</summary>
             return arrCopy;
         };
-
     };
 
     var qA = function (arr) {
@@ -813,7 +809,6 @@ SOFTWARE.
         ///	Array
         ///	</param>
         return new QArr(arr);
-
     };
 
     if (typeof window !== isUndefined) {
