@@ -12,11 +12,11 @@
   "main": "qarr.js",
   "license": "MIT",
   "homepage": "https://github.com/waltersoto/qArr",
-  "_release": "0.0.12",
+  "_release": "0.0.13",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.12",
-    "commit": "fff6d3a3d01b0f364315132b989fa95300eff39b"
+    "tag": "0.0.13",
+    "commit": "a84efdefa345593f8c012a6cb33510174b3f6ef7"
   },
   "ignore": [
     "**/.*",
