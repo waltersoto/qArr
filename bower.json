@@ -1,6 +1,6 @@
 {
   "name": "qArr",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Query data from array in JavaScript similar to Linq",
   "keywords": [
     "Linq",
