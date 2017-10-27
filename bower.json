@@ -21,6 +21,7 @@
   "ignore": [
     "**/.*",
     "node_modules",
+    ecaye
     "bower_components",
     "test",
     "tests"

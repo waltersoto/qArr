@@ -25,16 +25,16 @@ SOFTWARE.
 
     var isFunction = "function", isUndefined = "undefined", isString = "string";
 
-    var QArr = function (arr) {
+    var QArr = function (arrayParameter) {
         var me = this;
-        if (typeof arr === "undefined" || arr === null) {
+        if (typeof arrayParameter === "undefined" || arrayParameter === null) {
             throw new Error("Undefined array");
         }
-        if (arr.constructor !== Array) {
+        if (arrayParameter.constructor !== Array) {
             throw new Error("This object only works with Arrays");
         }
 
-        var arrCopy = arr.slice(0);
+        var arrayCopy = arrayParameter.slice(0);
 
         this.where = function (fn) {
             ///	<summary>
@@ -50,14 +50,14 @@ SOFTWARE.
                 var subset = [];
                 (function (a) {
                     for (var i = 0, max = a.length; i < max; i++) {
-                        if (fn(arrCopy[i], i)) {
-                            subset.push(arrCopy[i]);
+                        if (fn(arrayCopy[i], i)) {
+                            subset.push(arrayCopy[i]);
                         }
                     }
-                })(arrCopy);
-                arrCopy = subset;
+                })(arrayCopy);
+                arrayCopy = subset;
             } else {
-                arrCopy = arrCopy.filter(fn);
+                arrayCopy = arrayCopy.filter(fn);
             }
             return this;
         };
@@ -71,9 +71,9 @@ SOFTWARE.
             /// Ex. fn(val,index);
             ///	</param>
             ///	<returns type="this" />
-            if (arrCopy.length > 0 && typeof fn === isFunction) {
-                for (var i = 0, max = arrCopy.length; i < max; i++) {
-                    fn(arrCopy[i], i);
+            if (arrayCopy.length > 0 && typeof fn === isFunction) {
+                for (var i = 0, max = arrayCopy.length; i < max; i++) {
+                    fn(arrayCopy[i], i);
                 }
             }
             return this;
@@ -94,10 +94,10 @@ SOFTWARE.
                     for (var i = 0, max = a.length; i < max; i++) {
                         subset.push(fn(a[i], i));
                     }
-                })(arrCopy);
-                arrCopy = subset;
+                })(arrayCopy);
+                arrayCopy = subset;
             } else {
-                arrCopy = arrCopy.map(fn);
+                arrayCopy = arrayCopy.map(fn);
             }
             return this;
         };
@@ -120,8 +120,8 @@ SOFTWARE.
                         }
                     }
                 }
-            })(arrCopy);
-            arrCopy = subset;
+            })(arrayCopy);
+            arrayCopy = subset;
             return this;
         };
 
@@ -134,11 +134,11 @@ SOFTWARE.
             ///	</param>
             ///	<returns type="this" />
             var subset;
-            if (arrCopy.length > 0) {
-                if (typeof arrCopy[0] === isString) {
-                    subset = arrCopy.sort().reverse();
+            if (arrayCopy.length > 0) {
+                if (typeof arrayCopy[0] === isString) {
+                    subset = arrayCopy.sort().reverse();
                 } else {
-                    subset = arrCopy.sort(function (a, b) {
+                    subset = arrayCopy.sort(function (a, b) {
                         if (typeof fn !== isFunction) {
                             if (!isNaN(parseFloat(a))) {
                                 return -(parseFloat(a) - parseFloat(b));
@@ -154,7 +154,7 @@ SOFTWARE.
 
                     });
                 }
-                arrCopy = subset;
+                arrayCopy = subset;
             }
 
             return this;
@@ -169,11 +169,11 @@ SOFTWARE.
             ///	</param>
             ///	<returns type="this" />
             var subset;
-            if (arrCopy.length > 0) {
-                if (typeof arrCopy[0] === isString) {
-                    subset = arrCopy.sort();
+            if (arrayCopy.length > 0) {
+                if (typeof arrayCopy[0] === isString) {
+                    subset = arrayCopy.sort();
                 } else {
-                    subset = arrCopy.sort(function (a, b) {
+                    subset = arrayCopy.sort(function (a, b) {
 
                         if (typeof fn !== isFunction) {
                             if (!isNaN(parseFloat(a))) {
@@ -191,7 +191,7 @@ SOFTWARE.
 
                 }
 
-                arrCopy = subset;
+                arrayCopy = subset;
             }
 
             return this;
@@ -209,8 +209,8 @@ SOFTWARE.
             if (typeof fn === isFunction) {
                 this.where(fn);
             }
-            if (arrCopy.length > 0) {
-                return arrCopy[0];
+            if (arrayCopy.length > 0) {
+                return arrayCopy[0];
             }
             return null;
         };
@@ -227,8 +227,8 @@ SOFTWARE.
             if (typeof fn === isFunction) {
                 this.where(fn);
             }
-            if (arrCopy.length > 0) {
-                return arrCopy[arrCopy.length - 1];
+            if (arrayCopy.length > 0) {
+                return arrayCopy[arrayCopy.length - 1];
             }
 
             return null;
@@ -239,15 +239,15 @@ SOFTWARE.
             ///   <param name="fn" type="function">Condition</param> 
             ///	  <returns type="item or null" />
             this.where(fn);
-            if (arrCopy.length === 1) {
-                return arrCopy[0];
+            if (arrayCopy.length === 1) {
+                return arrayCopy[0];
             }
 
             return null;
         };
 
         var getElementAt = function (index, elemArray) {
-            if (elemArray.length > index) return arr[index];
+            if (elemArray.length > index) return arrayParameter[index];
             return null;
         };
 
@@ -255,7 +255,7 @@ SOFTWARE.
             ///   <summary>The ElementAt operator retrieves the element at a given index in the collection.</summary>
             ///   <param name="index" type="number">Index in array (starting with 0)</param> 
             ///	  <returns type="item or null" />
-            return getElementAt(index, arrCopy);
+            return getElementAt(index, arrayCopy);
         };
 
         this.count = function (fn) {
@@ -268,7 +268,7 @@ SOFTWARE.
             /// </signature>
             ///	<returns type="number" />
             if (typeof fn !== isFunction) {
-                return arrCopy.length;
+                return arrayCopy.length;
             }
             return this.where(fn).toArray().length;
         };
@@ -281,9 +281,9 @@ SOFTWARE.
             ///	 Number of items to skip
             ///	</param>
             ///	<returns type="this" />
-            if (arrCopy.length > 0 && num > 0) {
-                if (arrCopy.length > num) {
-                    arrCopy = arrCopy.slice(num);
+            if (arrayCopy.length > 0 && num > 0) {
+                if (arrayCopy.length > num) {
+                    arrayCopy = arrayCopy.slice(num);
                 }
             }
             return this;
@@ -298,10 +298,10 @@ SOFTWARE.
             ///	</param>
             ///	<returns type="this" />
             if (typeof fn !== isFunction) return this;
-            if (arrCopy.length === 0) return this;
+            if (arrayCopy.length === 0) return this;
             var num = 0;
-            for (var i = 0, max = arrCopy.length; i < max; i++) {
-                if (fn(arrCopy[i])) {
+            for (var i = 0, max = arrayCopy.length; i < max; i++) {
+                if (fn(arrayCopy[i])) {
                     num++;
                 } else {
                     break;
@@ -319,9 +319,9 @@ SOFTWARE.
             ///	Number of items to take
             ///	</param>
             ///	<returns type="this" />
-            if (arrCopy.length > 0 && num > 0) {
-                if (arrCopy.length > num) {
-                    arrCopy = arrCopy.slice(0, num);
+            if (arrayCopy.length > 0 && num > 0) {
+                if (arrayCopy.length > num) {
+                    arrayCopy = arrayCopy.slice(0, num);
                 }
             }
             return this;
@@ -336,10 +336,10 @@ SOFTWARE.
             ///	</param>
             ///	<returns type="this" />
             if (typeof fn !== isFunction) return this;
-            if (arrCopy.length === 0) return this;
+            if (arrayCopy.length === 0) return this;
             var num = 0;
-            for (var i = 0, max = arrCopy.length; i < max; i++) {
-                if (fn(arrCopy[i])) {
+            for (var i = 0, max = arrayCopy.length; i < max; i++) {
+                if (fn(arrayCopy[i])) {
                     num++;
                 } else {
                     break;
@@ -353,7 +353,7 @@ SOFTWARE.
             ///   <summary>Concatenate a set of all distinct elements in two arrays</summary> 
             ///   <param name="nArr" type="array">New array</param> 
 
-            arrCopy = arrCopy.concat(nArr);
+            arrayCopy = arrayCopy.concat(nArr);
             this.distinct();
 
             return this;
@@ -373,8 +373,8 @@ SOFTWARE.
             if (typeof size === isUndefined) {
                 size = 10;
             }
-            if (arrCopy.length > 0) {
-                arrCopy = this.skip((pg - 1) * size).take(size).toArray();
+            if (arrayCopy.length > 0) {
+                arrayCopy = this.skip((pg - 1) * size).take(size).toArray();
             }
             return this;
         };
@@ -397,7 +397,7 @@ SOFTWARE.
             ///	Condition to match
             ///	</param>
             ///	<returns type="true/false" />
-            return contains(arrCopy, item);
+            return contains(arrayCopy, item);
         };
 
         var findAny = function (array, fn) {
@@ -418,10 +418,10 @@ SOFTWARE.
             ///	Condition to match
             ///	</param>
             ///	<returns type="true/false" /> 
-            if (arrCopy.length === 0) return false;
+            if (arrayCopy.length === 0) return false;
             if (typeof fn !== "function") return false;
-            for (var i = 0; i < arrCopy.length; i++) {
-                if (!fn(arrCopy[i])) return false;
+            for (var i = 0; i < arrayCopy.length; i++) {
+                if (!fn(arrayCopy[i])) return false;
             }
             return true;
         }
@@ -434,7 +434,7 @@ SOFTWARE.
             ///	Condition to match
             ///	</param>
             ///	<returns type="true/false" /> 
-            return findAny(arrCopy, fn);
+            return findAny(arrayCopy, fn);
         };
 
         this.distinct = function () {
@@ -443,13 +443,13 @@ SOFTWARE.
             ///	</summary> 
             ///	<returns type="this" />
             var uniqueItems = [];
-            if (arrCopy.length > 0) {
-                for (var i = 0, m = arrCopy.length; i < m; i++) {
-                    if (!contains(uniqueItems, arrCopy[i])) {
-                        uniqueItems.push(arrCopy[i]);
+            if (arrayCopy.length > 0) {
+                for (var i = 0, m = arrayCopy.length; i < m; i++) {
+                    if (!contains(uniqueItems, arrayCopy[i])) {
+                        uniqueItems.push(arrayCopy[i]);
                     }
                 }
-                arrCopy = uniqueItems.slice(0);
+                arrayCopy = uniqueItems.slice(0);
             }
             return this;
         };
@@ -459,21 +459,21 @@ SOFTWARE.
             ///	Shuffle the elements in the array
             ///	</summary> 
             ///	<returns type="this" />
-            if (arrCopy.length > 0) {
-                var n = arrCopy.length;
+            if (arrayCopy.length > 0) {
+                var n = arrayCopy.length;
                 while (n) {
                     var j = Math.floor(Math.random() * (--n + 1));
-                    var tempN = arrCopy[n];
-                    var tempJ = arrCopy[j];
-                    arrCopy[n] = tempJ;
-                    arrCopy[j] = tempN;
+                    var tempN = arrayCopy[n];
+                    var tempJ = arrayCopy[j];
+                    arrayCopy[n] = tempJ;
+                    arrayCopy[j] = tempN;
                 }
             }
             return this;
 
         };
 
-        var indexInArr = function (fn, last, searchArray) {
+        var indexInArray = function (fn, last, searchArray) {
             var index = -1;
             for (var i = 0, max = searchArray.length; i < max; i++) {
                 if (fn(searchArray[i])) {
@@ -491,7 +491,7 @@ SOFTWARE.
             ///	Find last index of a element based on a condition
             ///	</summary> 
             ///	<returns type="int" />
-            return indexInArr(fn, true, arrCopy);
+            return indexInArray(fn, true, arrayCopy);
         };
 
         this.indexOf = function (fn) {
@@ -499,7 +499,7 @@ SOFTWARE.
             ///	Find first index of a element based on a condition
             ///	</summary> 
             ///	<returns type="int" /> 
-            return indexInArr(fn, false, arrCopy);
+            return indexInArray(fn, false, arrayCopy);
         };
 
         this.sum = function (asIntegers) {
@@ -519,13 +519,13 @@ SOFTWARE.
             var count = 0;
             var asInt = typeof asIntegers !== isUndefined;
 
-            if (arrCopy.length > 0) {
-                for (var i = 0, m = arrCopy.length; i < m; i++) {
-                    if (!isNaN(arrCopy[i])) {
+            if (arrayCopy.length > 0) {
+                for (var i = 0, m = arrayCopy.length; i < m; i++) {
+                    if (!isNaN(arrayCopy[i])) {
                         if (asInt) {
-                            count += parseInt(arrCopy[i]);
+                            count += parseInt(arrayCopy[i]);
                         } else {
-                            count += parseFloat(arrCopy[i]);
+                            count += parseFloat(arrayCopy[i]);
                         }
                     }
                 }
@@ -539,14 +539,14 @@ SOFTWARE.
             ///	</summary> 
             ///	<returns type="int" />
             var count = 0;
-            if (arrCopy.length > 0) {
-                for (var i = 0, m = arrCopy.length; i < m; i++) {
-                    if (!isNaN(arrCopy[i])) {
+            if (arrayCopy.length > 0) {
+                for (var i = 0, m = arrayCopy.length; i < m; i++) {
+                    if (!isNaN(arrayCopy[i])) {
                         if (count === 0) {
-                            count = parseInt(arrCopy[i]);
+                            count = parseInt(arrayCopy[i]);
                         }
-                        if (parseInt(arrCopy[i]) < count) {
-                            count = parseInt(arrCopy[i]);
+                        if (parseInt(arrayCopy[i]) < count) {
+                            count = parseInt(arrayCopy[i]);
                         }
                     }
                 }
@@ -560,11 +560,11 @@ SOFTWARE.
             ///	</summary> 
             ///	<returns type="int" />
             var count = 0;
-            if (arrCopy.length > 0) {
-                for (var i = 0, m = arrCopy.length; i < m; i++) {
-                    if (!isNaN(arrCopy[i])) {
-                        if (parseInt(arrCopy[i]) > count) {
-                            count = parseInt(arrCopy[i]);
+            if (arrayCopy.length > 0) {
+                for (var i = 0, m = arrayCopy.length; i < m; i++) {
+                    if (!isNaN(arrayCopy[i])) {
+                        if (parseInt(arrayCopy[i]) > count) {
+                            count = parseInt(arrayCopy[i]);
                         }
                     }
                 }
@@ -579,11 +579,11 @@ SOFTWARE.
             ///	<returns type="float" />
             var count = 0;
             var counter = 0;
-            if (arrCopy.length > 0) {
-                for (var i = 0, m = arrCopy.length; i < m; i++) {
-                    if (!isNaN(arrCopy[i])) {
+            if (arrayCopy.length > 0) {
+                for (var i = 0, m = arrayCopy.length; i < m; i++) {
+                    if (!isNaN(arrayCopy[i])) {
                         counter++;
-                        count += parseFloat(arrCopy[i]);
+                        count += parseFloat(arrayCopy[i]);
                     }
                 }
             }
@@ -598,10 +598,10 @@ SOFTWARE.
             ///	<returns type="array of {key:'',item[]}" />
             ///	<returns type="this" /> 
             var grouped = [];
-            if (arrCopy.length > 0) {
-                for (var i = 0, m = arrCopy.length; i < m; i++) {
-                    if (!contains(grouped, fn(arrCopy[i]))) {
-                        grouped.push({ key: fn(arrCopy[i]), obj: arrCopy[i] });
+            if (arrayCopy.length > 0) {
+                for (var i = 0, m = arrayCopy.length; i < m; i++) {
+                    if (!contains(grouped, fn(arrayCopy[i]))) {
+                        grouped.push({ key: fn(arrayCopy[i]), obj: arrayCopy[i] });
                     }
                 }
                 var groupedBy = [];
@@ -612,7 +612,7 @@ SOFTWARE.
                         })) {
                             groupedBy.push({ key: grouped[localKey].key, item: [] });
                         }
-                        var index = indexInArr(function (n) { return n.key === grouped[localKey].key; }, false, groupedBy);
+                        var index = indexInArray(function (n) { return n.key === grouped[localKey].key; }, false, groupedBy);
                         if (index !== -1 && index < grouped.length) {
                             var located = getElementAt(localKey, grouped);
                             if (located !== null && typeof located !== "undefined") {
@@ -621,7 +621,7 @@ SOFTWARE.
                         }
                     })(groupKey);
                 }
-                arrCopy = groupedBy.slice(0);
+                arrayCopy = groupedBy.slice(0);
             }
             return this;
         };
@@ -637,13 +637,13 @@ SOFTWARE.
             if (excludedArray.constructor === Array) {
                 //Paramter must be an array
                 var notExcluded = [];
-                if (arrCopy.length > 0) {
-                    for (var i = 0, m = arrCopy.length; i < m; i++) {
-                        if (!contains(excludedArray, arrCopy[i])) {
-                            notExcluded.push(arrCopy[i]);
+                if (arrayCopy.length > 0) {
+                    for (var i = 0, m = arrayCopy.length; i < m; i++) {
+                        if (!contains(excludedArray, arrayCopy[i])) {
+                            notExcluded.push(arrayCopy[i]);
                         }
                     }
-                    arrCopy = notExcluded.slice(0);
+                    arrayCopy = notExcluded.slice(0);
                 }
 
             }
@@ -679,22 +679,22 @@ SOFTWARE.
             if (typeof seed !== "undefined") {
                 aggregated = seed;
             }
-            if (arrCopy.length > 0) {
+            if (arrayCopy.length > 0) {
                 if (typeof aggregated === "undefined") {
-                    if (!isNaN(arrCopy[0])) {
+                    if (!isNaN(arrayCopy[0])) {
                         aggregated = 0;
-                    } else if (typeof arrCopy[0] === "boolean") {
+                    } else if (typeof arrayCopy[0] === "boolean") {
                         aggregated = false;
                     } else {
                         aggregated = "";
                     }
                 }
                 if (!Array.prototype.reduce) {
-                    for (var i = 0, m = arrCopy.length; i < m; i++) {
-                        aggregated = fn(aggregated, arrCopy[i]);
+                    for (var i = 0, m = arrayCopy.length; i < m; i++) {
+                        aggregated = fn(aggregated, arrayCopy[i]);
                     }
                 } else {
-                    aggregated = arrCopy.reduce(fn);
+                    aggregated = arrayCopy.reduce(fn);
                 }
             }
             return aggregated || 0;
@@ -706,8 +706,8 @@ SOFTWARE.
             ///	</summary>
             ///	<returns type="this" />
 
-            if (arrCopy.length === 0) return this;
-            arrCopy.reverse();
+            if (arrayCopy.length === 0) return this;
+            arrayCopy.reverse();
             return this;
         };
 
@@ -727,13 +727,13 @@ SOFTWARE.
                 throw new Error("This method expects an Array");
             }
             if (typeof fn !== "function") return this;
-            if (arrCopy.length === 0) return this;
+            if (arrayCopy.length === 0) return this;
             var size = array.length;
-            for (var i = 0, m = arrCopy.length; i < m; i++) {
+            for (var i = 0, m = arrayCopy.length; i < m; i++) {
                 if (i >= size) {
-                    arrCopy.splice(i, 1);
+                    arrayCopy.splice(i, 1);
                 } else {
-                    arrCopy[i] = fn(array[i], arrCopy[i]);
+                    arrayCopy[i] = fn(array[i], arrayCopy[i]);
                 }
             }
             return this;
@@ -750,12 +750,12 @@ SOFTWARE.
             if (array.constructor !== Array) {
                 throw new Error("This method expects an Array");
             }
-            if (arrCopy.length === 0) return this;
+            if (arrayCopy.length === 0) return this;
             var removeList = [];
-            for (var i = 0, m = arrCopy.length; i < m; i++) {
+            for (var i = 0, m = arrayCopy.length; i < m; i++) {
                 var remove = true;
                 for (var s = 0, sM = array.length; s < sM; s++) {
-                    if (JSON.stringify(arrCopy[i]) === JSON.stringify(array[s])) {
+                    if (JSON.stringify(arrayCopy[i]) === JSON.stringify(array[s])) {
                         remove = false;
                         break;
                     }
@@ -766,7 +766,7 @@ SOFTWARE.
             }
             if (removeList.length === 0) return this;
             for (var r = 0, rM = removeList.length; r < rM; r++) {
-                arrCopy.splice(removeList[r], 1);
+                arrayCopy.splice(removeList[r], 1);
             }
 
             return this;
@@ -783,10 +783,10 @@ SOFTWARE.
             if (array.constructor !== Array) {
                 throw new Error("This method expects an Array");
             }
-            if (arrCopy.length === 0 && array.length === 0) return true;
-            if (arrCopy.length !== array.length) return false;
-            for (var i = 0, max = arrCopy.length; i < max; i++) {
-                if (arrCopy[i] !== array[i]) {
+            if (arrayCopy.length === 0 && array.length === 0) return true;
+            if (arrayCopy.length !== array.length) return false;
+            for (var i = 0, max = arrayCopy.length; i < max; i++) {
+                if (arrayCopy[i] !== array[i]) {
                     return false;
                 }
             }
@@ -809,10 +809,10 @@ SOFTWARE.
             ///	<returns type="this" /> 
             if (isNaN(startNumber) || isNaN(endNumber)) return this;
             if (endNumber <= startNumber) return this;
-            arrCopy.splice(0);
+            arrayCopy.splice(0);
 
             for (var i = startNumber; i <= endNumber; i++) {
-                arrCopy.push(i);
+                arrayCopy.push(i);
             }
 
             return this;
@@ -822,7 +822,7 @@ SOFTWARE.
             ///	<summary>
             ///	Returns the transformed array
             ///	</summary>
-            return arrCopy;
+            return arrayCopy;
         };
     };
 
