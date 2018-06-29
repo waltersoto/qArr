@@ -1,0 +1,12 @@
+{
+  "name": "qarr",
+  "version": "0.0.13",
+  "description": "Query data from array in JavaScript similar to Linq",
+  "main": "index.js",
+  "repository": {
+    "url": "https://example.com/your-username/my-new-project",
+    "type": "git"
+  },
+  "author": "Your Name <you@example.com>",
+  "license": "MIT"
+}
