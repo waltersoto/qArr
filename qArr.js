@@ -502,6 +502,22 @@ SOFTWARE.
             return indexInArray(fn, false, arrayCopy);
         };
 
+        this.allIndexesOf = function (fn) {
+            ///	<summary>
+            ///	Find all indexes in an array that match a condition
+            ///	</summary> 
+            ///	<returns type="array" /> 
+            var indexList = [];
+            if (arrayCopy.length > 0) {
+                for (var i = 0, max = arrayCopy.length; i < max; i++) {
+                    if (fn(arrayCopy[i])) {
+                        indexList.push(i);
+                    }
+                }
+            }
+            return indexList;
+        };
+
         this.sum = function (asIntegers) {
             /// <signature>
             ///	<summary>
